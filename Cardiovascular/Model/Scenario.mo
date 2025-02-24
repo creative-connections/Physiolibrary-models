@@ -12,8 +12,8 @@ package Scenario "models of various scenarios"
     Stenosis.StenosisResistance aorticstenosis
       "Aorctic stenosis - valve diameter goes to 1/2 =resistance 1/2^4 greater"
       annotation (Placement(transformation(extent={{-30,-54},{22,-4}})));
-    Physiolibrary.Types.Constants.HydraulicConductanceConst AVgon(k=0)
-      annotation (Placement(transformation(
+    Bodylight.Types.Constants.HydraulicConductanceConst AVgon(k=0) annotation (
+        Placement(transformation(
           extent={{-10,-9},{10,9}},
           rotation=180,
           origin={14,-9})));
@@ -22,8 +22,8 @@ package Scenario "models of various scenarios"
             "(mmHg.s)/ml"))
       "Aorctic stenosis - valve diameter goes to 1/2 =resistance 1/2^4 greater"
       annotation (Placement(transformation(extent={{22,-54},{74,-4}})));
-    Physiolibrary.Types.Constants.HydraulicConductanceConst mvgoff(k=0)
-      annotation (Placement(transformation(
+    Bodylight.Types.Constants.HydraulicConductanceConst mvgoff(k=0) annotation
+      (Placement(transformation(
           extent={{-10,-9},{10,9}},
           rotation=180,
           origin={66,-9})));
@@ -96,13 +96,13 @@ package Scenario "models of various scenarios"
   package Stenosis
       extends Modelica.Icons.UtilitiesPackage;
     model StenosisElastance
-      parameter Physiolibrary.Types.HydraulicElastance InitialElastance;
-      parameter Physiolibrary.Types.HydraulicElastance FinalElastance;
-      parameter Physiolibrary.Types.Time startTime(displayUnit="s") = 20;
-      parameter Physiolibrary.Types.Time duration(displayUnit="s") = 5;
-      Physiolibrary.Types.RealIO.HydraulicComplianceOutput
-        hydrauliccompliance annotation (Placement(transformation(extent={{
-                48,-10},{68,10}}), iconTransformation(
+      parameter Bodylight.Types.HydraulicElastance InitialElastance;
+      parameter Bodylight.Types.HydraulicElastance FinalElastance;
+      parameter Bodylight.Types.Time startTime(displayUnit="s") = 20;
+      parameter Bodylight.Types.Time duration(displayUnit="s") = 5;
+      Bodylight.Types.RealIO.HydraulicComplianceOutput hydrauliccompliance
+        annotation (Placement(transformation(extent={{48,-10},{68,10}}),
+            iconTransformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={8,24})));
@@ -150,12 +150,12 @@ package Scenario "models of various scenarios"
     end StenosisElastance;
 
     model StenosisResistance
-      parameter Physiolibrary.Types.HydraulicResistance InitialResistance;
-      parameter Physiolibrary.Types.HydraulicResistance FinalResistance;
-      parameter Physiolibrary.Types.Time startTime(displayUnit="s") = 20;
-      parameter Physiolibrary.Types.Time duration(displayUnit="s") = 5;
-      Physiolibrary.Types.RealIO.HydraulicConductanceOutput conductance
-        annotation (Placement(transformation(extent={{48,-10},{68,10}}),
+      parameter Bodylight.Types.HydraulicResistance InitialResistance;
+      parameter Bodylight.Types.HydraulicResistance FinalResistance;
+      parameter Bodylight.Types.Time startTime(displayUnit="s") = 20;
+      parameter Bodylight.Types.Time duration(displayUnit="s") = 5;
+      Bodylight.Types.RealIO.HydraulicConductanceOutput conductance annotation
+        (Placement(transformation(extent={{48,-10},{68,10}}),
             iconTransformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
@@ -206,7 +206,7 @@ package Scenario "models of various scenarios"
 
   model BleedingTransfusionScenario
     extends Cardiovascular.Interfaces.Controlled.ScenarioControl;
-    import Physiolibrary.Types.*;
+    import Bodylight.Types.*;
     //after 1 minute, 5minutes bleeding
     parameter Time Tbs=60, Tbd=5*60;
     parameter Volume BloodLoss=0.001;
@@ -290,12 +290,12 @@ package Scenario "models of various scenarios"
   model BleedingTransfusionBurkhoffInterface
     //Real RBCbleed,plasmableed,RBCtransfusion,plasmatransfusion,hematocrit;
 
-    Physiolibrary.Types.RealIO.VolumeFlowRateInput bleedrate annotation (
-        Placement(transformation(extent={{-40,60},{0,100}}),
-          iconTransformation(extent={{-40,60},{0,100}})));
-    Physiolibrary.Types.RealIO.VolumeFlowRateInput transrate annotation (
-        Placement(transformation(extent={{-40,-106},{0,-66}}),
-          iconTransformation(extent={{-40,-106},{0,-66}})));
+    Bodylight.Types.RealIO.VolumeFlowRateInput bleedrate annotation (Placement(
+          transformation(extent={{-40,60},{0,100}}), iconTransformation(extent=
+              {{-40,60},{0,100}})));
+    Bodylight.Types.RealIO.VolumeFlowRateInput transrate annotation (Placement(
+          transformation(extent={{-40,-106},{0,-66}}), iconTransformation(
+            extent={{-40,-106},{0,-66}})));
 
     Modelica.Blocks.Interfaces.RealInput hematocrit
       annotation (Placement(transformation(extent={{-40,10},{0,50}})));
@@ -353,7 +353,7 @@ package Scenario "models of various scenarios"
   end BleedingTransfusionBurkhoffInterface;
 
   model BleedingTransfusionRate
-    import Physiolibrary.Types.*;
+    import Bodylight.Types.*;
     //after 1 minute, 5minutes bleeding
     parameter Time Tbs=60, Tbd=5*60;
     parameter Volume BloodLoss=0.001;
@@ -361,12 +361,12 @@ package Scenario "models of various scenarios"
     parameter Time Tts=20*60, Ttd=10*60;
     parameter Volume BloodTrans=0.001;
 
-    Physiolibrary.Types.RealIO.VolumeFlowRateOutput bleedrate annotation (
-        Placement(transformation(extent={{80,80},{100,100}}),
-          iconTransformation(extent={{80,80},{100,100}})));
-    Physiolibrary.Types.RealIO.VolumeFlowRateOutput transrate annotation (
-        Placement(transformation(extent={{80,22},{100,42}}),
-          iconTransformation(extent={{80,22},{100,42}})));
+    Bodylight.Types.RealIO.VolumeFlowRateOutput bleedrate annotation (Placement(
+          transformation(extent={{80,80},{100,100}}), iconTransformation(extent
+            ={{80,80},{100,100}})));
+    Bodylight.Types.RealIO.VolumeFlowRateOutput transrate annotation (Placement(
+          transformation(extent={{80,22},{100,42}}), iconTransformation(extent=
+              {{80,22},{100,42}})));
   equation
     if time > Tbs and time < Tbs + Tbd then
       bleedrate = BloodLoss/Tbd;

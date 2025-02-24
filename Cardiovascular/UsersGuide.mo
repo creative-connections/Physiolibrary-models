@@ -1,4 +1,4 @@
-﻿within Cardiovascular;
+within Cardiovascular;
 package UsersGuide "User's Guide"
   extends Modelica.Icons.Information;
 class Overview "Overview of Physiolibrary"

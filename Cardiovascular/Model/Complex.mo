@@ -4,7 +4,7 @@ package Complex
      extends Modelica.Icons.ExamplesPackage;
   package Environment "Central model settings and environment"
 
-    import Physiolibrary.Types.*;
+    import Bodylight.Types.*;
 
     model ComplexEnvironment "Class encompassing all settings"
       extends Cardiovascular.Icons.Settings;
@@ -208,7 +208,7 @@ package Complex
       package Abstraction "Common ancestors"
         partial record Initialization "Initial values for circuit segments"
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           parameter Pressure SA_pRef
             "Reference pressure for systemic arteries";
@@ -800,7 +800,7 @@ package Complex
       package Connectors
         "Connectors used in the model, compatible with Physiolibrary"
         connector In "Inflow connector"
-          extends Physiolibrary.Hydraulic.Interfaces.HydraulicPort;
+          extends Bodylight.Hydraulic.Interfaces.HydraulicPort;
 
           annotation (Icon(coordinateSystem(preserveAspectRatio=false,
                   extent={{-100,-100},{100,100}}), graphics={
@@ -825,7 +825,7 @@ package Complex
         end In;
 
         connector Through "Connector with no preferred flow direction"
-          extends Physiolibrary.Hydraulic.Interfaces.HydraulicPort;
+          extends Bodylight.Hydraulic.Interfaces.HydraulicPort;
 
           annotation (Icon(graphics={Ellipse(
                   extent={{-80,80},{80,-80}},
@@ -835,7 +835,7 @@ package Complex
         end Through;
 
         connector Out "Outflow connector"
-          extends Physiolibrary.Hydraulic.Interfaces.HydraulicPort;
+          extends Bodylight.Hydraulic.Interfaces.HydraulicPort;
 
           annotation (Icon(graphics={
                 Ellipse(
@@ -862,7 +862,7 @@ package Complex
 
       package BlockKinds "Fundamental types of blocks"
         partial model Port "Block with flow through"
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           Connectors.In cIn "Inflow" annotation (Placement(transformation(
                   extent={{-90,-10},{-70,10}})));
@@ -892,7 +892,7 @@ package Complex
         "Components for analysis of signal during a cardiac cycle"
         package Abstraction "Common ancestors"
           partial class Analyzer
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             replaceable type T = Real constrainedby Real
               "Signal type - to guarantee a unit control" annotation (
@@ -911,7 +911,7 @@ package Complex
 
         class Averager "Computes average value"
           extends Abstraction.Analyzer;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           discrete T average(start=init, fixed=true)
             "Resulting signal average of the previous phase";
@@ -937,7 +937,7 @@ package Complex
 
         class Maxer "Traces maximum value in the signal"
           extends Abstraction.Analyzer;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           discrete T maximum(start=init) "Resulting real-time maximum";
 
@@ -955,8 +955,8 @@ package Complex
         package Elements "Fundamental units for RLC"
           model R "Resistive port"
             extends Auxiliary.BlockKinds.Port;
-            extends Physiolibrary.Icons.Resistor;
-            import Physiolibrary.Types.*;
+            extends Bodylight.Icons.Resistor;
+            import Bodylight.Types.*;
 
             input HydraulicResistance R "Current resistance";
             input Real nonlinearity=1
@@ -970,8 +970,8 @@ package Complex
 
           model L "Port with inertance"
             extends Auxiliary.BlockKinds.Port;
-            extends Physiolibrary.Icons.Inertance;
-            import Physiolibrary.Types.*;
+            extends Bodylight.Icons.Inertance;
+            import Bodylight.Types.*;
 
             input HydraulicInertance L=0 "Current inertance";
 
@@ -983,8 +983,8 @@ package Complex
 
           model C "Compliance compartment"
             extends Auxiliary.BlockKinds.Hook;
-            extends Physiolibrary.Icons.BloodElasticCompartment;
-            import Physiolibrary.Types.*;
+            extends Bodylight.Icons.BloodElasticCompartment;
+            import Bodylight.Types.*;
 
             parameter Volume V_init=0 "Starting volume";
 
@@ -1005,18 +1005,20 @@ package Complex
           model ExponentialResistance
             "Resistive port with exponential resistivity profile dp = Base*q^Exp"
             extends Auxiliary.BlockKinds.Port;
-            extends Physiolibrary.Icons.Resistor;
-            import Physiolibrary.Types.*;
+            extends Bodylight.Icons.Resistor;
+            import Bodylight.Types.*;
 
             parameter Real Base "dp = base * Q^Exp ";
             parameter Real Exp "dp = base * Q^Exp ";
             parameter Boolean closed = false;
             parameter Real FrenchGauge = 10 "Outer diameter for computation of shear stress";
-            parameter Modelica.SIunits.Thickness wallThickness = 0.8e-3 "For shear stress calculation only";
+            parameter Modelica.Units.SI.Thickness wallThickness=0.8e-3
+              "For shear stress calculation only";
             parameter Real relativeViscosity = 1 "Transformation from water to blood";
-            Modelica.SIunits.Diameter innerD = FrenchGauge / 3 * 1e-3 - 2*wallThickness;
-            parameter Modelica.SIunits.Length l = 1;
-            Modelica.SIunits.ShearStress shearStress = dp*innerD/l/4;
+            Modelica.Units.SI.Diameter innerD=FrenchGauge/3*1e-3 - 2*
+                wallThickness;
+            parameter Modelica.Units.SI.Length l=1;
+            Modelica.Units.SI.ShearStress shearStress=dp*innerD/l/4;
           //   Real qs=cIn.q^2;
           //   Real dps=dp^2;
           equation
@@ -1054,7 +1056,7 @@ package Complex
         package Compounds "RLC circuits"
           model RC "Constant RC segment"
             extends BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicResistance R "Constant resistance";
             parameter HydraulicCompliance C "Constant compliance";
@@ -1100,7 +1102,7 @@ package Complex
 
           model RLC "Constant RLC segment"
             extends BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicResistance R "Constant resistance";
             parameter HydraulicInertance L "Constant inertance";
@@ -1153,7 +1155,7 @@ package Complex
 
           model CLR "Constant CLR segment"
             extends BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicCompliance C "Constant compliance";
             parameter HydraulicInertance L "Constant inertance";
@@ -1206,7 +1208,7 @@ package Complex
 
           model CRL "Constant CRL segment"
             extends Auxiliary.BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicCompliance C "Constant compliance";
             parameter HydraulicResistance R "Constant resistance";
@@ -1259,7 +1261,7 @@ package Complex
 
           model CLpRR "Constant C(L|R)R segment"
             extends CLR;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicResistance Rp "Constant parallel resistance";
 
@@ -1293,7 +1295,7 @@ package Complex
 
           model CRLpR "Constant CR(L|R) segment"
             extends CRL;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicResistance Rp "Constant parallel resistance";
 
@@ -1327,7 +1329,7 @@ package Complex
 
           partial model LpRCR "Constant (L|R)CR segment"
             extends BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicInertance L "Constant inertance";
             parameter HydraulicResistance Rp "Constant parallel resistance";
@@ -1391,7 +1393,7 @@ package Complex
 
           model RRcC "Constant R(R-C) segment"
             extends BlockKinds.Port;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter HydraulicCompliance C "Constant compliance";
             parameter HydraulicResistance Rc
@@ -1451,7 +1453,7 @@ package Complex
         package Tubes "Geometrical tubes with RLC characteristics"
           package Abstraction "Common ancestors"
             model Tube "Tube segment"
-              extends Physiolibrary.Icons.HydraulicResistor;
+              extends Bodylight.Icons.HydraulicResistor;
               import Cardiovascular.Types.*;
 
               parameter Cardiovascular.Types.Length l "Length";
@@ -1480,7 +1482,7 @@ package Complex
             import Cardiovascular.Constants.*;
             import Cardiovascular.Types.*;
             import Modelica.Constants.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             parameter Cardiovascular.Types.Length h "Wall thickness";
             parameter Pressure E "Young's elastic modulus";
@@ -1510,7 +1512,7 @@ package Complex
             import Cardiovascular.Constants.*;
             import Cardiovascular.Types.*;
             import Modelica.Constants.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             outer parameter Cardiovascular.Types.Length cannulaOuterDiameter
               "Outer diameter of ECMO cannula";
@@ -1546,7 +1548,7 @@ package Complex
             import Cardiovascular.Constants.*;
             import Cardiovascular.Types.*;
             import Modelica.Constants.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             outer parameter Boolean enableIABP "Whether IABP is implanted";
             outer parameter Time tDeflation
@@ -1654,7 +1656,7 @@ package Complex
             import Cardiovascular.Model.Complex.Environment.*;
             import Cardiovascular.Types.*;
             import Modelica.Constants.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             outer Environment.ComplexEnvironment settings
               "Everything is out there...";
@@ -1772,7 +1774,7 @@ package Complex
           import Cardiovascular.Model.Complex.Components.Auxiliary.Connectors.*;
           import Cardiovascular.Model.Complex.Components.Main.Vessels.*;
           import Cardiovascular.Model.Complex.Environment.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there...";
@@ -2031,7 +2033,7 @@ package Complex
           extends Cardiovascular.Icons.Valve;
           import Cardiovascular.Constants.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           // discrete input Cardiovascular.Types.Area ARef(start=ARef_init,
           //       fixed=true) "Adaptable cross-sectional area";
@@ -2094,7 +2096,7 @@ package Complex
             sigmaARef=settings.constants.atriumSigmaARef);
           import Cardiovascular.Model.Complex.Components.Auxiliary.BlockKinds.*;
           import Modelica.Constants.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           input Pressure pP "Pericardial pressure";
 
@@ -2123,7 +2125,7 @@ package Complex
             vMax=settings.constants.ventricleVMax,
             tauS=settings.constants.ventricleTauS,
             sigmaARef=settings.constants.ventricleSigmaARef);
-          extends Physiolibrary.Icons.HeartVentricle;
+          extends Bodylight.Icons.HeartVentricle;
           import Cardiovascular.Types.*;
 
         //   discrete input Real EAmRef(start = EAmRef_init, fixed = true)
@@ -2159,7 +2161,7 @@ package Complex
           import Cardiovascular.Model.Complex.Components.Auxiliary.Connectors.*;
           import Cardiovascular.Model.Complex.Environment.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there...";
@@ -2295,7 +2297,7 @@ package Complex
         package Abstraction "Common ancestors"
           partial model Vessels "General block for vessels"
             extends Auxiliary.BlockKinds.Port;
-            import Physiolibrary.Types.RealIO.*;
+            import Bodylight.Types.RealIO.*;
 
             PressureOutput pInner "Output pressure for cappilary control"
               annotation (Placement(transformation(
@@ -2317,8 +2319,8 @@ package Complex
             extends Abstraction.Vessels;
             import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.*;
             import Cardiovascular.Types.*;
-            import Physiolibrary.Types.*;
-            import Physiolibrary.Hydraulic.Sensors.*;
+            import Bodylight.Types.*;
+            import Bodylight.Hydraulic.Sensors.*;
 
             inner parameter Real k "Stiffness non-linearity coefficient";
             inner parameter Cardiovascular.Types.Length l "Length of vessels";
@@ -2376,8 +2378,8 @@ package Complex
 
           model Capillaries "Port for capillaries"
             extends Auxiliary.RLC.Elements.R(dp=pIn - pOut, R=R_R);
-            import Physiolibrary.Types.RealIO.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.RealIO.*;
+            import Bodylight.Types.*;
 
             PressureInput pIn annotation (Placement(transformation(extent={
                       {-66,-90},{-26,-50}}), iconTransformation(
@@ -2407,12 +2409,12 @@ package Complex
 
         model AdaptableVesselsCore "Compliance core of adaptable vessels"
           extends Hook;
-          extends Physiolibrary.Icons.ElasticBalloon;
+          extends Bodylight.Icons.ElasticBalloon;
           import Cardiovascular.Model.Complex.Components.Auxiliary.BlockKinds.*;
           import Cardiovascular.Constants.*;
           import Cardiovascular.Types.*;
           import Cardiovascular.Types.IO.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer parameter Real k "Stiffness non-linearity coefficient";
           outer parameter Cardiovascular.Types.Length l "Length of vessels";
@@ -2489,7 +2491,7 @@ package Complex
           extends Cardiovascular.Icons.Vessels;
           extends Auxiliary.BlockKinds.Port;
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Elements.*;
-          import Physiolibrary.Types.Volume;
+          import Bodylight.Types.Volume;
 
           input Real pM "Intramyocardial pressure";
 
@@ -2537,14 +2539,14 @@ package Complex
 
         model ConsumingCapillaries
           "Capillaries visualized as consuming oxygen"
-          extends Physiolibrary.Icons.PerfusionOD;
+          extends Bodylight.Icons.PerfusionOD;
           extends Abstraction.Capillaries;
 
         end ConsumingCapillaries;
 
         model OxygenatingCapillaries
           "Capillaries visualized as blood oxygenating"
-          extends Physiolibrary.Icons.PerfusionDO;
+          extends Bodylight.Icons.PerfusionDO;
           extends Abstraction.Capillaries;
 
         end OxygenatingCapillaries;
@@ -2575,7 +2577,7 @@ package Complex
             extends Cardiovascular.Icons.Arteries;
             extends SystemicArteries(isAdaptable=false);
             import Cardiovascular.Types.*;
-            import Physiolibrary.Types.*;
+            import Bodylight.Types.*;
 
             // DISABLING THE ADAPTATION
           //   inner parameter Real k = 10
@@ -2604,7 +2606,7 @@ package Complex
             l=settings.initialization.SA_l,
             k=settings.initialization.SA_k);
           import Cardiovascular.Model.Complex.Environment.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there";
@@ -2617,7 +2619,7 @@ package Complex
 
           parameter Volume V_init=300e-6;
 
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump volumeControl_(
+          Bodylight.Hydraulic.Sources.UnlimitedPump volumeControl_(
               useSolutionFlowInput=true);
 
         equation
@@ -2655,7 +2657,7 @@ package Complex
             L(displayUnit="mmHg.s2/ml") = 666611.937075,
             R(displayUnit="(mmHg.s)/ml") = 123456530.74629,
             Rp(displayUnit="(mmHg.s)/ml") = 666611.937075);
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
           Volume V_filling(start=0);
 
             Real q_filling;
@@ -2664,7 +2666,7 @@ package Complex
 
           parameter Volume V_init=300e-6;
 
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump volumeControl_(
+          Bodylight.Hydraulic.Sources.UnlimitedPump volumeControl_(
               useSolutionFlowInput=true);
 
         equation
@@ -2729,7 +2731,7 @@ package Complex
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Elements.*;
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Tubes.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.Volume;
+          import Bodylight.Types.Volume;
 
           outer Cardiovascular.Model.Complex.Environment.ComplexEnvironment settings
             "Everything is out there...";
@@ -2984,7 +2986,7 @@ package Complex
           import
             Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Compounds.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.Volume;
+          import Bodylight.Types.Volume;
 
           outer Cardiovascular.Model.Complex.Environment.ComplexEnvironment settings
             "Everything is out there...";
@@ -3428,7 +3430,7 @@ package Complex
           extends SystemicArteries.Abstraction.SystemicArteries_Adapter;
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Tubes.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer Cardiovascular.Model.Complex.Environment.ComplexEnvironment settings
             "Everything is out there...";
@@ -3519,7 +3521,7 @@ package Complex
 
           parameter Volume V_init=270e-6;
 
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump volumeControl_(
+          Bodylight.Hydraulic.Sources.UnlimitedPump volumeControl_(
               useSolutionFlowInput=true);
 
           TubeRLC_Derived ascendingAorta(
@@ -5366,8 +5368,8 @@ package Complex
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Tubes.*;
           import Cardiovascular.Model.Complex.Environment.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Hydraulic.Components.IdealValve;
-          import Physiolibrary.Types.*;
+          import Bodylight.Hydraulic.Components.IdealValve;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there";
@@ -5427,14 +5429,14 @@ package Complex
                 rotation=-60,
                 origin={78.1699,18.8301})));
           TubeR venousCannula(l=settings.supports.ECMO_cannulaLength, r=
-                settings.supports.ECMO_cannulaInnerDiameter/2) if
-            _isEnabled annotation (Placement(transformation(
+                settings.supports.ECMO_cannulaInnerDiameter/2)
+         if _isEnabled annotation (Placement(transformation(
                 extent={{-6.23204,-6.86599},{6.23204,6.86599}},
                 rotation=60,
                 origin={-65.1699,35.1699})));
           TubeR arterialCannula(l=settings.supports.ECMO_cannulaLength, r=
-                settings.supports.ECMO_cannulaInnerDiameter/2) if
-            _isEnabled annotation (Placement(transformation(
+                settings.supports.ECMO_cannulaInnerDiameter/2)
+         if _isEnabled annotation (Placement(transformation(
                 extent={{-6.99997,-8.4641},{6.99997,8.4641}},
                 rotation=-60,
                 origin={68.8301,30.1699})));
@@ -5534,7 +5536,7 @@ package Complex
           extends Cardiovascular.Icons.Screw;
           extends Auxiliary.BlockKinds.Port;
           import Cardiovascular.Model.Complex.Environment.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there";
@@ -5555,14 +5557,14 @@ package Complex
         end Pump;
 
         model Oxygenator "Resistive hollow-fiber oxygenator"
-          extends Physiolibrary.Icons.PerfusionDO;
+          extends Bodylight.Icons.PerfusionDO;
           extends Cardiovascular.Icons.O2;
           extends Auxiliary.BlockKinds.Port;
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.*;
           import Cardiovascular.Constants.*;
           import Cardiovascular.Types.*;
           import Modelica.Constants.*;
-          import Physiolibrary.Types.*;
+          import Bodylight.Types.*;
 
           parameter Real fiberCount "Number of fibers";
           parameter Cardiovascular.Types.Length fiberLength
@@ -5595,8 +5597,8 @@ package Complex
           import Cardiovascular.Model.Complex.Components.Auxiliary.RLC.Tubes.*;
           import Cardiovascular.Model.Complex.Environment.*;
           import Cardiovascular.Types.*;
-          import Physiolibrary.Hydraulic.Components.IdealValve;
-          import Physiolibrary.Types.*;
+          import Bodylight.Hydraulic.Components.IdealValve;
+          import Bodylight.Types.*;
 
           outer Environment.ComplexEnvironment settings
             "Everything is out there";
@@ -5709,7 +5711,7 @@ package Complex
 
     model Heart
       extends Interfaces.Heart;
-      import Physiolibrary.Types.*;
+      import Bodylight.Types.*;
       replaceable Main.Heart.HeartLVCannulated
                                    heart(
         VPRef_init=settings.initialization.peri_VRef,
@@ -5933,7 +5935,7 @@ package Complex
     model Systemic
       extends Interfaces.Systemic;
         import Cardiovascular.Model.Complex.Components.Auxiliary.Analyzers.*;
-      import Physiolibrary.Types.*;
+      import Bodylight.Types.*;
       import Cardiovascular.Model.Complex.Environment.*;
 
       outer Environment.ComplexEnvironment settings
@@ -6073,7 +6075,7 @@ package Complex
     model Pulmonary
       extends Interfaces.Pulmonary;
       import Cardiovascular.Model.Complex.Components.Auxiliary.Analyzers.*;
-      import Physiolibrary.Types.*;
+      import Bodylight.Types.*;
       import Cardiovascular.Model.Complex.Environment.*;
 
       outer Environment.ComplexEnvironment settings
@@ -6190,8 +6192,8 @@ package Complex
     import Cardiovascular.Model.Complex.Components.Auxiliary.Analyzers.*;
     import Cardiovascular.Constants.*;
     import Cardiovascular.Types.*;
-    import Physiolibrary.Hydraulic.Sources.*;
-    import Physiolibrary.Types.*;
+    import Bodylight.Hydraulic.Sources.*;
+    import Bodylight.Types.*;
 
     inner Environment.ComplexEnvironment settings(
       redeclare Environment.Supports.No supports,

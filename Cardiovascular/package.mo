@@ -8,5 +8,5 @@ package Cardiovascular
 
 
 
-  annotation (uses(Modelica(version="3.2.2"), Physiolibrary(version="2.3.1")));
+  annotation (uses(Bodylight(version="1.0"), Modelica(version="4.0.0")));
 end Cardiovascular;

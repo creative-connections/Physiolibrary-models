@@ -4,7 +4,7 @@ package Meurs
   model HemodynamicsMeurs_shallow
     extends Cardiovascular.Icons.Runnable_Shallow;
 
-    Physiolibrary.Hydraulic.Components.ElasticVessel PulmonaryArteries(
+    Bodylight.Hydraulic.Components.ElasticVessel PulmonaryArteries(
       useV0Input=false,
       useComplianceInput=false,
       volume_start=0.000106,
@@ -13,11 +13,11 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{-94,84},{-68,110}})));
-    Physiolibrary.Hydraulic.Components.Conductor
-      PulmonaryArteriesResistance(useConductanceInput=false, Conductance(
-          displayUnit="ml/(mmHg.s)") = 6.818059724437e-08)
+    Bodylight.Hydraulic.Components.Conductor PulmonaryArteriesResistance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        6.818059724437e-08)
       annotation (Placement(transformation(extent={{-56,85},{-22,111}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel PulmonaryVeins(
+    Bodylight.Hydraulic.Components.ElasticVessel PulmonaryVeins(
       useV0Input=false,
       useComplianceInput=false,
       volume_start=0.000518,
@@ -26,11 +26,11 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{-10,86},{14,110}})));
-    Physiolibrary.Hydraulic.Components.Conductor PulmonaryVeinResistance(
-        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
-           2.4999552322936e-06)
+    Bodylight.Hydraulic.Components.Conductor PulmonaryVeinResistance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        2.4999552322936e-06)
       annotation (Placement(transformation(extent={{26,86},{56,110}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel LeftAtrium(
+    Bodylight.Hydraulic.Components.ElasticVessel LeftAtrium(
       useComplianceInput=true,
       useV0Input=false,
       volume_start=9.31e-05,
@@ -38,7 +38,7 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{74,50},{102,78}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel LeftVentricle(
+    Bodylight.Hydraulic.Components.ElasticVessel LeftVentricle(
       useComplianceInput=true,
       useV0Input=false,
       volume_start=0.000144,
@@ -46,7 +46,7 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{148,48},{178,78}})));
-    Physiolibrary.Hydraulic.Components.IdealValve ventricleArteryValve(
+    Bodylight.Hydraulic.Components.IdealValve ventricleArteryValve(
       _Gon(displayUnit="ml/(mmHg.s)") = 9.3757696980707e-07,
       _Goff(displayUnit="ml/(mmHg.s)") = 0,
       useLimitationInputs=false)
@@ -57,15 +57,15 @@ package Meurs
     Parts.VentricularElastance ventricularElastance(EMIN=11999014.86735,
         EMAX=533289549.66)
       annotation (Placement(transformation(extent={{164,92},{200,124}})));
-    Physiolibrary.Hydraulic.Components.IdealValve atrioVentricleValve(
+    Bodylight.Hydraulic.Components.IdealValve atrioVentricleValve(
       _Gon(displayUnit="ml/(mmHg.s)") = 2.4999552322936e-06,
       useLimitationInputs=false,
-      _Goff(displayUnit="ml/(mmHg.s)") = 0) annotation (Placement(visible=
-            true, transformation(
+      _Goff(displayUnit="ml/(mmHg.s)") = 0) annotation (Placement(visible=true,
+          transformation(
           origin={127,64},
           extent={{-13,12},{13,-12}},
           rotation=0)));
-    Physiolibrary.Hydraulic.Components.ElasticVessel IntraThoracicArteries(
+    Bodylight.Hydraulic.Components.ElasticVessel IntraThoracicArteries(
       useV0Input=false,
       useComplianceInput=false,
       useExternalPressureInput=true,
@@ -74,7 +74,7 @@ package Meurs
       Compliance=5.2429304151611e-09,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{168,6},{190,28}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel ExtrathoracicArteries(
+    Bodylight.Hydraulic.Components.ElasticVessel ExtrathoracicArteries(
       volume_start(displayUnit="ml") = 0.000526,
       useV0Input=false,
       useExternalPressureInput=false,
@@ -82,31 +82,29 @@ package Meurs
       ZeroPressureVolume=0.00037,
       Compliance=1.3493607749463e-08)
       annotation (Placement(transformation(extent={{58,6},{84,32}})));
-    Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit=
-            "mmHg.s2/ml") = 93325.6711905, volumeFlow_start(displayUnit=
-            "ml/min") = 2.1666666666667e-05) annotation (Placement(
-          transformation(
+    Bodylight.Hydraulic.Components.Inertia inertia(I(displayUnit="mmHg.s2/ml")
+         = 93325.6711905, volumeFlow_start(displayUnit="ml/min") =
+        2.1666666666667e-05) annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=180,
           origin={134,18})));
-    Physiolibrary.Hydraulic.Components.Conductor ArteryResistance(
-        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
-           1.2526028316622e-07)
+    Bodylight.Hydraulic.Components.Conductor ArteryResistance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        1.2526028316622e-07)
       annotation (Placement(transformation(extent={{94,8},{114,28}})));
-    Physiolibrary.Hydraulic.Components.Conductor
-      SystemicArterioralConductance(useConductanceInput=false, Conductance(
-          displayUnit="ml/(mmHg.s)") = 9.3757696980707e-09) annotation (
-        Placement(transformation(
+    Bodylight.Hydraulic.Components.Conductor SystemicArterioralConductance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        9.3757696980707e-09) annotation (Placement(transformation(
           extent={{11,-9},{-11,9}},
           rotation=0,
           origin={23,17})));
-    Physiolibrary.Hydraulic.Components.Conductor SmallVenuleConductance(
-        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
-           3.7503078792283e-08) annotation (Placement(transformation(
+    Bodylight.Hydraulic.Components.Conductor SmallVenuleConductance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        3.7503078792283e-08) annotation (Placement(transformation(
           extent={{14,-9},{-14,9}},
           rotation=0,
           origin={-60,17})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel PeripheralVessels(
+    Bodylight.Hydraulic.Components.ElasticVessel PeripheralVessels(
       useV0Input=false,
       useExternalPressureInput=false,
       useComplianceInput=false,
@@ -114,15 +112,15 @@ package Meurs
       ZeroPressureVolume=0.000185,
       Compliance=2.8652352197304e-08)
       annotation (Placement(transformation(extent={{-26,10},{-6,30}})));
-    Physiolibrary.Hydraulic.Components.Conductor VeinsResistance(
-        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
-           8.3256834918868e-08)
+    Bodylight.Hydraulic.Components.Conductor VeinsResistance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        8.3256834918868e-08)
       annotation (Placement(transformation(extent={{-120,6},{-148,28}})));
-    Physiolibrary.Hydraulic.Components.Conductor CentralVenousResistance(
-        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)")=
-           2.4999552322936e-06)
+    Bodylight.Hydraulic.Components.Conductor CentralVenousResistance(
+        useConductanceInput=false, Conductance(displayUnit="ml/(mmHg.s)") =
+        2.4999552322936e-06)
       annotation (Placement(transformation(extent={{-208,8},{-232,28}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel IntraThoracicVeins(
+    Bodylight.Hydraulic.Components.ElasticVessel IntraThoracicVeins(
       useV0Input=false,
       useComplianceInput=false,
       useExternalPressureInput=true,
@@ -131,7 +129,7 @@ package Meurs
       Compliance=4.1178380513927e-07,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{-192,4},{-164,32}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel ExtrathoracicVeins(
+    Bodylight.Hydraulic.Components.ElasticVessel ExtrathoracicVeins(
       useV0Input=false,
       useExternalPressureInput=false,
       useComplianceInput=false,
@@ -139,7 +137,7 @@ package Meurs
       ZeroPressureVolume=0.001,
       Compliance=4.4403645290063e-07)
       annotation (Placement(transformation(extent={{-116,4},{-90,30}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel RightAtrium(
+    Bodylight.Hydraulic.Components.ElasticVessel RightAtrium(
       useComplianceInput=true,
       useV0Input=false,
       volume_start=0.000135,
@@ -147,7 +145,7 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{-242,44},{-214,72}})));
-    Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
+    Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
       useComplianceInput=true,
       useV0Input=false,
       volume_start=0.000131,
@@ -155,7 +153,7 @@ package Meurs
       useExternalPressureInput=true,
       ExternalPressure=-533.28954966)
       annotation (Placement(transformation(extent={{-168,42},{-138,72}})));
-    Physiolibrary.Hydraulic.Components.IdealValve ventricleArteryValve1(
+    Bodylight.Hydraulic.Components.IdealValve ventricleArteryValve1(
       _Goff(displayUnit="ml/(mmHg.s)") = 0,
       useLimitationInputs=false,
       _Gon(displayUnit="ml/(mmHg.s)") = 2.4999552322936e-06)
@@ -166,7 +164,7 @@ package Meurs
     Parts.VentricularElastance ventricularElastance1(EMIN=7599376.082655,
         EMAX=65327969.83335)
       annotation (Placement(transformation(extent={{-180,88},{-150,122}})));
-    Physiolibrary.Hydraulic.Components.IdealValve atrioVentricleValve1(
+    Bodylight.Hydraulic.Components.IdealValve atrioVentricleValve1(
       _Gon(displayUnit="ml/(mmHg.s)") = 2.497705047566e-06,
       _Goff=0,
       useLimitationInputs=false) annotation (Placement(visible=true,
@@ -174,13 +172,13 @@ package Meurs
           origin={-189,58},
           extent={{-13,12},{13,-12}},
           rotation=0)));
-    replaceable Physiolibrary.Types.Constants.FrequencyConst HeartRate(k(
+    replaceable Bodylight.Types.Constants.FrequencyConst HeartRate(k(
           displayUnit="1/min") = 1.2) annotation (Placement(visible=true,
           transformation(
           origin={-243,128.5},
           extent={{-11,-6.5},{11,6.5}},
           rotation=0)));
-    Physiolibrary.Types.Constants.PressureConst IntraThoracicPressure(k=-533.28954966)
+    Bodylight.Types.Constants.PressureConst IntraThoracicPressure(k=-533.28954966)
       annotation (Placement(transformation(
           extent={{-9,-6},{9,6}},
           rotation=0,
@@ -428,8 +426,7 @@ package Meurs
     extends Modelica.Icons.UtilitiesPackage;
     model Pulmonary
       extends Cardiovascular.Interfaces.Pulmonary;
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
-        PulmonaryArteries(
+      Bodylight.Hydraulic.Components.ElasticVesselElastance PulmonaryArteries(
         useV0Input=false,
         useExternalPressureInput=false,
         useComplianceInput=false,
@@ -438,12 +435,11 @@ package Meurs
         ExternalPressure=-533.28954966,
         Elastance=31064116.267695)
         annotation (Placement(transformation(extent={{-82,-12},{-58,12}})));
-      Physiolibrary.Hydraulic.Components.Resistor
-        PulmonaryArteriesResistance(useConductanceInput=false, Resistance(
-            displayUnit="(mmHg.s)/ml") = 14665462.61565)
+      Bodylight.Hydraulic.Components.Resistor PulmonaryArteriesResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          14665462.61565)
         annotation (Placement(transformation(extent={{-38,-14},{-10,14}})));
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
-        PulmonaryVeins(
+      Bodylight.Hydraulic.Components.ElasticVesselElastance PulmonaryVeins(
         useV0Input=false,
         useExternalPressureInput=false,
         useComplianceInput=false,
@@ -452,9 +448,9 @@ package Meurs
         ExternalPressure=-533.28954966,
         Elastance=6066168.6273825)
         annotation (Placement(transformation(extent={{8,-12},{32,12}})));
-      Physiolibrary.Hydraulic.Components.Resistor PulmonaryVeinResistance(
-          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml")=
-             399967.162245)
+      Bodylight.Hydraulic.Components.Resistor PulmonaryVeinResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          399967.162245)
         annotation (Placement(transformation(extent={{46,-12},{70,12}})));
     equation
       connect(q_in, PulmonaryArteries.q_in) annotation (Line(
@@ -496,7 +492,7 @@ package Meurs
 
     model Systemic
       extends Cardiovascular.Interfaces.Systemic;
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
+      Bodylight.Hydraulic.Components.ElasticVesselElastance
         IntraThoracicArteries(
         useV0Input=false,
         useExternalPressureInput=false,
@@ -506,20 +502,19 @@ package Meurs
         ExternalPressure=-533.28954966,
         Elastance=190651014.00345)
         annotation (Placement(transformation(extent={{78,-6},{92,8}})));
-      Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit=
-              "mmHg.s2/ml") = 93325.6711905, volumeFlow_start(displayUnit=
-              "ml/min") = 2.1666666666667e-05) annotation (Placement(
-            transformation(
+      Bodylight.Hydraulic.Components.Inertia inertia(I(displayUnit="mmHg.s2/ml")
+           = 93325.6711905, volumeFlow_start(displayUnit="ml/min") =
+          2.1666666666667e-05) annotation (Placement(transformation(
             extent={{-6,-5},{6,5}},
             rotation=180,
             origin={70,1})));
-      Physiolibrary.Hydraulic.Components.Resistor  ArteryResistance(
-          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml")=
-             7999343.2449) annotation (Placement(transformation(
+      Bodylight.Hydraulic.Components.Resistor ArteryResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          7999343.2449) annotation (Placement(transformation(
             extent={{7,-7},{-7,7}},
             rotation=0,
             origin={55,1})));
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
+      Bodylight.Hydraulic.Components.ElasticVesselElastance
         ExtrathoracicArteries(
         volume_start(displayUnit="ml") = 0.000526,
         useV0Input=false,
@@ -528,15 +523,13 @@ package Meurs
         ZeroPressureVolume=0.00037,
         Elastance=74127247.40274)
         annotation (Placement(transformation(extent={{38,-22},{54,-6}})));
-      Physiolibrary.Hydraulic.Components.Resistor
-        SystemicArterioralResistance(useConductanceInput=false, Resistance(
-            displayUnit="(mmHg.s)/ml") = 106657909.932) annotation (
-          Placement(transformation(
+      Bodylight.Hydraulic.Components.Resistor SystemicArterioralResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          106657909.932) annotation (Placement(transformation(
             extent={{9,-8},{-9,8}},
             rotation=0,
             origin={27,-14})));
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
-        PeripheralVessels(
+      Bodylight.Hydraulic.Components.ElasticVesselElastance PeripheralVessels(
         useV0Input=false,
         useExternalPressureInput=false,
         useComplianceInput=false,
@@ -544,14 +537,13 @@ package Meurs
         ZeroPressureVolume=0.000185,
         Elastance=34930465.50273)
         annotation (Placement(transformation(extent={{2,-36},{16,-22}})));
-      Physiolibrary.Hydraulic.Components.Resistor  SmallVenuleResistance(
-          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml")=
-             26664477.483) annotation (Placement(transformation(
+      Bodylight.Hydraulic.Components.Resistor SmallVenuleResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          26664477.483) annotation (Placement(transformation(
             extent={{7,-7},{-7,7}},
             rotation=0,
             origin={-7,-29})));
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
-        ExtrathoracicVeins(
+      Bodylight.Hydraulic.Components.ElasticVesselElastance ExtrathoracicVeins(
         useV0Input=false,
         useExternalPressureInput=false,
         useComplianceInput=false,
@@ -559,12 +551,11 @@ package Meurs
         ZeroPressureVolume=0.001,
         Elastance=2253148.3473135)
         annotation (Placement(transformation(extent={{-32,-22},{-14,-6}})));
-      Physiolibrary.Hydraulic.Components.Resistor  VeinsResistance(
-          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml")=
-             11999014.86735)
+      Bodylight.Hydraulic.Components.Resistor VeinsResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          11999014.86735)
         annotation (Placement(transformation(extent={{-32,-22},{-48,-6}})));
-      Physiolibrary.Hydraulic.Components.ElasticVesselElastance
-        IntraThoracicVeins(
+      Bodylight.Hydraulic.Components.ElasticVesselElastance IntraThoracicVeins(
         useV0Input=false,
         useExternalPressureInput=false,
         useComplianceInput=false,
@@ -573,9 +564,9 @@ package Meurs
         ExternalPressure=-533.28954966,
         Elastance=2426467.450953)
         annotation (Placement(transformation(extent={{-66,-8},{-48,8}})));
-      Physiolibrary.Hydraulic.Components.Resistor  CentralVenousResistance(
-          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml")=
-             399967.162245)
+      Bodylight.Hydraulic.Components.Resistor CentralVenousResistance(
+          useConductanceInput=false, Resistance(displayUnit="(mmHg.s)/ml") =
+          399967.162245)
         annotation (Placement(transformation(extent={{-74,-8},{-90,8}})));
     equation
       connect(VeinsResistance.q_in, ExtrathoracicVeins.q_in) annotation (
@@ -660,7 +651,7 @@ package Meurs
 
     model Heart
       extends Cardiovascular.Interfaces.Heart;
-      Physiolibrary.Hydraulic.Components.ElasticVessel rightAtrium(
+      Bodylight.Hydraulic.Components.ElasticVessel rightAtrium(
         useComplianceInput=true,
         useV0Input=false,
         useExternalPressureInput=false,
@@ -668,16 +659,15 @@ package Meurs
         ZeroPressureVolume=3e-05,
         ExternalPressure=-533.28954966)
         annotation (Placement(transformation(extent={{-68,8},{-40,36}})));
-      Physiolibrary.Hydraulic.Components.IdealValveResistance
-        atrioVentricleValve1(
+      Bodylight.Hydraulic.Components.IdealValveResistance atrioVentricleValve1(
         _Goff=0,
         useLimitationInputs=false,
-        _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
-          Placement(visible=true, transformation(
+        _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (Placement(
+            visible=true, transformation(
             origin={-14,22},
             extent={{-12,12},{12,-12}},
             rotation=0)));
-      Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
+      Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
         useComplianceInput=true,
         useV0Input=false,
         useExternalPressureInput=false,
@@ -685,8 +675,8 @@ package Meurs
         ZeroPressureVolume=4e-05,
         ExternalPressure=-533.28954966)
         annotation (Placement(transformation(extent={{8,8},{36,36}})));
-      Physiolibrary.Hydraulic.Components.IdealValveResistance
-        ventricleArteryValve1(
+      Bodylight.Hydraulic.Components.IdealValveResistance ventricleArteryValve1
+        (
         _Goff(displayUnit="ml/(mmHg.s)") = 0,
         useLimitationInputs=false,
         _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245)
@@ -697,13 +687,13 @@ package Meurs
       AtrialElastance atrialElastance1(EMIN=6666119.37075, EMAX=
             19998358.11225)
         annotation (Placement(transformation(extent={{-94,54},{-56,86}})));
-      replaceable Physiolibrary.Types.Constants.FrequencyConst HeartRate(k(
+      replaceable Bodylight.Types.Constants.FrequencyConst HeartRate(k(
             displayUnit="1/min") = 1.2) annotation (Placement(visible=true,
             transformation(
             origin={59,92},
             extent={{-7,-6},{7,6}},
             rotation=180)));
-      Physiolibrary.Hydraulic.Components.ElasticVessel leftAtrium(
+      Bodylight.Hydraulic.Components.ElasticVessel leftAtrium(
         useComplianceInput=true,
         useV0Input=false,
         useExternalPressureInput=false,
@@ -714,16 +704,15 @@ package Meurs
       AtrialElastance atrialElastance(EMIN=15998686.4898, EMAX=
             37330268.4762)
         annotation (Placement(transformation(extent={{8,-50},{46,-18}})));
-      Physiolibrary.Hydraulic.Components.IdealValveResistance
-        atrioVentricleValve(
+      Bodylight.Hydraulic.Components.IdealValveResistance atrioVentricleValve(
         useLimitationInputs=false,
         _Goff(displayUnit="ml/(mmHg.s)") = 0,
-        _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (
-          Placement(visible=true, transformation(
+        _Ron(displayUnit="(mmHg.s)/ml") = 399967.162245) annotation (Placement(
+            visible=true, transformation(
             origin={24,-72},
             extent={{-12,12},{12,-12}},
             rotation=180)));
-      Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
+      Bodylight.Hydraulic.Components.ElasticVessel leftVentricle(
         useComplianceInput=true,
         useV0Input=false,
         useExternalPressureInput=false,
@@ -734,12 +723,11 @@ package Meurs
       VentricularElastance ventricularElastance(EMIN=11999014.86735, EMAX=
             533289549.66) annotation (Placement(transformation(extent={{-66,
                 -46},{-30,-14}})));
-      Physiolibrary.Hydraulic.Components.IdealValveResistance
-        ventricleArteryValve(
+      Bodylight.Hydraulic.Components.IdealValveResistance ventricleArteryValve(
         _Goff(displayUnit="ml/(mmHg.s)") = 0,
         useLimitationInputs=false,
-        _Ron(displayUnit="(mmHg.s)/ml") = 1066579.09932) annotation (
-          Placement(transformation(
+        _Ron(displayUnit="(mmHg.s)/ml") = 1066579.09932) annotation (Placement(
+            transformation(
             extent={{-12,12},{12,-12}},
             rotation=180,
             origin={-58,-72})));
@@ -843,29 +831,28 @@ package Meurs
 
     model AtrialElastance
       extends HeartIntervals;
-      Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct "compliance"
+      Bodylight.Types.RealIO.HydraulicComplianceOutput Ct "compliance"
         annotation (Placement(transformation(extent={{100,-10},{120,10}}),
             iconTransformation(extent={{100,-20},{138,18}})));
-      Physiolibrary.Types.HydraulicElastance Et "elasticity";
-      parameter Physiolibrary.Types.HydraulicElastance EMIN
-        "Diastolic elastance";
+      Bodylight.Types.HydraulicElastance Et "elasticity";
+      parameter Bodylight.Types.HydraulicElastance EMIN "Diastolic elastance";
       parameter Boolean useEs_extInput=false
         "=true, if external elastance/compliance value is used" annotation (
         Evaluate=true,
         HideResult=true,
         choices(__Dymola_checkBox=true),
         Dialog(group="External inputs/outputs"));
-      parameter Physiolibrary.Types.HydraulicElastance EMAX
+      parameter Bodylight.Types.HydraulicElastance EMAX
         "Maximum systolic elastance"
         annotation (Dialog(enable=not useEs_extInput));
-      Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
-            Ees) = 1/es_int if useEs_extInput annotation (Placement(
-            transformation(extent={{60,60},{100,100}}), iconTransformation(
+      Bodylight.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/Ees) = 1/
+        es_int if useEs_extInput annotation (Placement(transformation(extent={{
+                60,60},{100,100}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=0,
             origin={-80,80})));
     protected
-      Physiolibrary.Types.HydraulicElastance es_int;
+      Bodylight.Types.HydraulicElastance es_int;
     equation
       if not useEs_extInput then
         es_int = EMAX;
@@ -912,20 +899,18 @@ package Meurs
 
     model VentricularElastance
       extends HeartIntervals;
-      Physiolibrary.Types.RealIO.HydraulicComplianceOutput Ct
-        "ventricular elasticity" annotation (Placement(transformation(
-              extent={{100,-10},{120,10}}), iconTransformation(extent={{100,
-                4},{138,42}})));
+      Bodylight.Types.RealIO.HydraulicComplianceOutput Ct
+        "ventricular elasticity" annotation (Placement(transformation(extent={{
+                100,-10},{120,10}}), iconTransformation(extent={{100,4},{138,42}})));
       Modelica.Blocks.Interfaces.RealOutput Et0
         "normalized ventricular elasticity (0..1)" annotation (Placement(
             transformation(extent={{100,-24},{120,-4}}), iconTransformation(
               extent={{100,-40},{138,-2}})));
-      Physiolibrary.Types.RealIO.TimeOutput HeartInterval "eapsed time"
-        annotation (Placement(transformation(extent={{102,-42},{122,-22}}),
+      Bodylight.Types.RealIO.TimeOutput HeartInterval "eapsed time" annotation
+        (Placement(transformation(extent={{102,-42},{122,-22}}),
             iconTransformation(extent={{100,-98},{138,-60}})));
-      Physiolibrary.Types.HydraulicElastance Et;
-      parameter Physiolibrary.Types.HydraulicElastance EMIN
-        "Diastolic elastance ";
+      Bodylight.Types.HydraulicElastance Et;
+      parameter Bodylight.Types.HydraulicElastance EMIN "Diastolic elastance ";
       constant Real Kn=0.57923032735652;
       //Kn is always = 0.5792303273565197
       //... the t * sin(pi*t) has its maximum at t = 0.645773676543406 and = 0.5792303273565197
@@ -937,17 +922,17 @@ package Meurs
         HideResult=true,
         choices(__Dymola_checkBox=true),
         Dialog(group="External inputs/outputs"));
-      parameter Physiolibrary.Types.HydraulicElastance EMAX
+      parameter Bodylight.Types.HydraulicElastance EMAX
         "Maximum systolic elastance"
         annotation (Dialog(enable=not useEs_extInput));
-      Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
-            EMAX) = 1/es_int if useEs_extInput annotation (Placement(
-            transformation(extent={{60,60},{100,100}}), iconTransformation(
+      Bodylight.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/EMAX) = 1/
+        es_int if useEs_extInput annotation (Placement(transformation(extent={{
+                60,60},{100,100}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=0,
             origin={-80,80})));
     protected
-      Physiolibrary.Types.HydraulicElastance es_int;
+      Bodylight.Types.HydraulicElastance es_int;
     equation
       if not useEs_extInput then
         es_int = EMAX;
@@ -1006,15 +991,15 @@ package Meurs
     end VentricularElastance;
 
     model HeartIntervals
-      discrete Physiolibrary.Types.Time Tas;
-      discrete Physiolibrary.Types.Time T0;
-      discrete Physiolibrary.Types.Time Tvs;
-      parameter Physiolibrary.Types.Time Tav(displayUnit="s") = 0.01
+      discrete Bodylight.Types.Time Tas;
+      discrete Bodylight.Types.Time T0;
+      discrete Bodylight.Types.Time Tvs;
+      parameter Bodylight.Types.Time Tav(displayUnit="s") = 0.01
         "atrioventricular delay";
-      discrete Modelica.SIunits.Time HP(start=0) "heart period";
+      discrete Modelica.Units.SI.Time HP(start=0) "heart period";
       Boolean b(start=false);
-      Physiolibrary.Types.RealIO.FrequencyInput HR "heart rate" annotation (
-         Placement(transformation(extent={{-12,68},{28,108}}),
+      Bodylight.Types.RealIO.FrequencyInput HR "heart rate" annotation (
+          Placement(transformation(extent={{-12,68},{28,108}}),
             iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=270,

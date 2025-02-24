@@ -87,8 +87,8 @@ package Control "models of control mechanism and additional components"
     // from orign.mo(a={30,1}, b={0.194});
     Modelica.Blocks.Continuous.TransferFunction H4(a={2,1}, b={0.1});
     Modelica.Blocks.Nonlinear.DeadZone deadZone(uMax=0.1, uMin=-0.1);
-    parameter Physiolibrary.Types.Pressure PAOmedia=13465.561128915;
-    parameter Physiolibrary.Types.Frequency HR0Param=1.3333333333333
+    parameter Bodylight.Types.Pressure PAOmedia=13465.561128915;
+    parameter Bodylight.Types.Frequency HR0Param=1.3333333333333
       annotation (Dialog(enable=not useConductanceInput));
     parameter Boolean useHRInput=false
       "=true, if external HR value is used" annotation (
@@ -96,61 +96,56 @@ package Control "models of control mechanism and additional components"
       HideResult=true,
       choices(__Dymola_checkBox=true),
       Dialog(group="External inputs/outputs"));
-    Physiolibrary.Types.RealIO.FrequencyInput cond(start=HR0Param) = HR0 if
-         useHRInput annotation (Placement(transformation(extent={{-62,36},{
-              -22,76}}), iconTransformation(
+    Bodylight.Types.RealIO.FrequencyInput cond(start=HR0Param) = HR0
+      if useHRInput annotation (Placement(transformation(extent={{-62,36},{-22,
+              76}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=180,
           origin={26,76})));
-    Physiolibrary.Types.RealIO.PressureInput PAo "pressure in aorta"
-      annotation (Placement(transformation(extent={{2,-58},{42,-18}}),
-          iconTransformation(
+    Bodylight.Types.RealIO.PressureInput PAo "pressure in aorta" annotation (
+        Placement(transformation(extent={{2,-58},{42,-18}}), iconTransformation(
           extent={{-16,-16},{16,16}},
           rotation=0,
           origin={-76,-82})));
-    Physiolibrary.Types.RealIO.FrequencyOutput HR
+    Bodylight.Types.RealIO.FrequencyOutput HR
       "heart rate - compatible with Const block" annotation (Placement(
           transformation(extent={{-76,60},{-56,80}}), iconTransformation(
           extent={{-15,-15},{15,15}},
           rotation=180,
           origin={-81,75})));
-    Physiolibrary.Types.RealIO.HydraulicComplianceOutput evright
-      annotation (Placement(transformation(extent={{80,22},{100,42}}),
-          iconTransformation(
+    Bodylight.Types.RealIO.HydraulicComplianceOutput evright annotation (
+        Placement(transformation(extent={{80,22},{100,42}}), iconTransformation(
           extent={{-14,-14},{14,14}},
           rotation=180,
           origin={-76,10})));
-    Physiolibrary.Types.RealIO.HydraulicComplianceOutput evleft annotation (
-       Placement(transformation(extent={{78,-18},{98,2}}),
-          iconTransformation(
+    Bodylight.Types.RealIO.HydraulicComplianceOutput evleft annotation (
+        Placement(transformation(extent={{78,-18},{98,2}}), iconTransformation(
           extent={{-16,-16},{16,16}},
           rotation=180,
           origin={-80,42})));
-    Physiolibrary.Types.HydraulicElastance evrightref;
-    Physiolibrary.Types.HydraulicElastance evleftref;
-    Physiolibrary.Types.RealIO.HydraulicComplianceOutput evenacava
-      annotation (Placement(transformation(extent={{78,-54},{98,-34}}),
+    Bodylight.Types.HydraulicElastance evrightref;
+    Bodylight.Types.HydraulicElastance evleftref;
+    Bodylight.Types.RealIO.HydraulicComplianceOutput evenacava annotation (
+        Placement(transformation(extent={{78,-54},{98,-34}}),
           iconTransformation(
           extent={{-16,-16},{16,16}},
           rotation=180,
           origin={-78,-58})));
-    Physiolibrary.Types.RealIO.HydraulicConductanceOutput RS annotation (
-        Placement(transformation(extent={{80,-90},{100,-70}}),
-          iconTransformation(
+    Bodylight.Types.RealIO.HydraulicConductanceOutput RS annotation (Placement(
+          transformation(extent={{80,-90},{100,-70}}), iconTransformation(
           extent={{-14,-14},{14,14}},
           rotation=180,
           origin={-76,-24})));
-    parameter Physiolibrary.Types.HydraulicElastance EV0right=
-        103991462.1837;
-    parameter Physiolibrary.Types.HydraulicElastance EV0left=106657909.932;
-    parameter Physiolibrary.Types.HydraulicCompliance EV0venacava=
+    parameter Bodylight.Types.HydraulicElastance EV0right=103991462.1837;
+    parameter Bodylight.Types.HydraulicElastance EV0left=106657909.932;
+    parameter Bodylight.Types.HydraulicCompliance EV0venacava=
         1.8751539396141e-006;
-    parameter Physiolibrary.Types.HydraulicResistance RS0(displayUnit=
-          "(mmHg.s)/ml") = 81793284.67910001;
-    parameter Physiolibrary.Types.Time activationDelay=15;
+    parameter Bodylight.Types.HydraulicResistance RS0(displayUnit="(mmHg.s)/ml")
+       = 81793284.67910001;
+    parameter Bodylight.Types.Time activationDelay=15;
     //  parameter Physiolibrary.Types.HydraulicConductance Conductance=0
   protected
-    Physiolibrary.Types.Frequency HR0;
+    Bodylight.Types.Frequency HR0;
   //  parameter Physiolibrary.Types.HydraulicCompliance ECV0;
   equation
     if not useHRInput then
@@ -225,17 +220,17 @@ package Control "models of control mechanism and additional components"
 
     model KidneyPO2Estimate
 
-      Physiolibrary.Types.RealIO.PressureOutput pressure annotation (
-          Placement(transformation(extent={{82,-10},{102,10}}),
-            iconTransformation(extent={{82,-10},{102,10}})));
+      Bodylight.Types.RealIO.PressureOutput pressure annotation (Placement(
+            transformation(extent={{82,-10},{102,10}}), iconTransformation(
+              extent={{82,-10},{102,10}})));
       parameter Real MaxPo2=60;
-      Physiolibrary.Types.RealIO.FractionInput hematocrit annotation (
-          Placement(transformation(extent={{-100,-20},{-60,20}}),
-            iconTransformation(extent={{-100,-20},{-60,20}})));
-      Physiolibrary.Blocks.Factors.Spline spline(Yscale=101325/760, data=[0,
-            0, 0; 0.4, 35, 1; 0.6, 60, 0])
+      Bodylight.Types.RealIO.FractionInput hematocrit annotation (Placement(
+            transformation(extent={{-100,-20},{-60,20}}), iconTransformation(
+              extent={{-100,-20},{-60,20}})));
+      Bodylight.Blocks.Factors.Spline spline(Yscale=101325/760, data=[0,0,0;
+            0.4,35,1; 0.6,60,0])
         annotation (Placement(transformation(extent={{-14,-10},{6,10}})));
-      Physiolibrary.Types.Constants.OneConst one
+      Bodylight.Types.Constants.OneConst one
         annotation (Placement(transformation(extent={{-26,8},{-18,16}})));
     equation
       connect(hematocrit, spline.u) annotation (Line(
@@ -278,53 +273,51 @@ package Control "models of control mechanism and additional components"
             extent={{-21,-21},{21,21}},
             rotation=90,
             origin={-15,81})));
-      Physiolibrary.Types.RealIO.ConcentrationOutput concentration
-        annotation (Placement(transformation(extent={{42,72},{62,92}}),
+      Bodylight.Types.RealIO.ConcentrationOutput concentration annotation (
+          Placement(transformation(extent={{42,72},{62,92}}),
             iconTransformation(
             extent={{-21,-21},{21,21}},
             rotation=0,
             origin={121,3})));
-      Physiolibrary.Types.RealIO.PressureInput kidney_po2 annotation (
-          Placement(transformation(
+      Bodylight.Types.RealIO.PressureInput kidney_po2 annotation (Placement(
+            transformation(
             extent={{-20,-20},{20,20}},
             rotation=180,
             origin={138,-2}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=90,
             origin={-60,-80})));
-      Physiolibrary.Blocks.Factors.Spline PO2Effect(data={{0.0,4.0,0},{35.0,
-            0.0,-0.14},{60.0,-1.0,0}}, Xscale=101325/760) annotation (
-          Placement(transformation(
+      Bodylight.Blocks.Factors.Spline PO2Effect(data={{0.0,4.0,0},{35.0,0.0,-0.14},
+            {60.0,-1.0,0}}, Xscale=101325/760) annotation (Placement(
+            transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={102,-2})));
-      Physiolibrary.Blocks.Math.Power pow annotation (Placement(
-            transformation(
+      Bodylight.Blocks.Math.Power pow annotation (Placement(transformation(
             extent={{-6,-6},{6,6}},
             rotation=90,
             origin={98,16})));
-      Physiolibrary.Blocks.Factors.Normalization CounEffect annotation (
-          Placement(transformation(
+      Bodylight.Blocks.Factors.Normalization CounEffect annotation (Placement(
+            transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={58,46})));
-      Physiolibrary.Blocks.Factors.Normalization FunctionEffect annotation (
-         Placement(transformation(
+      Bodylight.Blocks.Factors.Normalization FunctionEffect annotation (
+          Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={78,46})));
-      Physiolibrary.Blocks.Factors.Normalization PO2Effect1 annotation (
-          Placement(transformation(
+      Bodylight.Blocks.Factors.Normalization PO2Effect1 annotation (Placement(
+            transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={98,46})));
-      Physiolibrary.Types.Constants.FractionConst
-        Kidney_Nefron_Count_TotalxNormal(k=1)
-        annotation (Placement(transformation(extent={{26,16},{42,26}})));
-      Physiolibrary.Types.Constants.FractionConst KidneyFunctionEffect(k=1)
+      Bodylight.Types.Constants.FractionConst Kidney_Nefron_Count_TotalxNormal(
+          k=1) annotation (Placement(transformation(extent={{26,16},{42,26}})));
+      Bodylight.Types.Constants.FractionConst KidneyFunctionEffect(k=1)
         annotation (Placement(transformation(extent={{60,10},{76,20}})));
-      Physiolibrary.Types.RealIO.VolumeInput ecf_volume annotation (
-          Placement(transformation(
+      Bodylight.Types.RealIO.VolumeInput ecf_volume annotation (Placement(
+            transformation(
             extent={{-20,-20},{20,20}},
             rotation=0,
             origin={-58,70}), iconTransformation(
@@ -336,10 +329,10 @@ package Control "models of control mechanism and additional components"
             extent={{-6,-6},{6,6}},
             rotation=0,
             origin={-58,46})));
-      Physiolibrary.Types.Constants.FractionConst hormoneFlowFraction(k=1)
+      Bodylight.Types.Constants.FractionConst hormoneFlowFraction(k=1)
         annotation (Placement(transformation(extent={{72,-28},{88,-20}})));
-      Physiolibrary.Types.Constants.MolarFlowRateConst molarFlowRate(k(
-            displayUnit="mol/min") = 0.011166666666667)
+      Bodylight.Types.Constants.MolarFlowRateConst molarFlowRate(k(displayUnit=
+              "mol/min") = 0.011166666666667)
         annotation (Placement(transformation(extent={{30,40},{44,50}})));
       EPO_Physiolibrary.Chemical.Sources.UnlimitedSolutePumpOut clearance(
           useSoluteFlowInput=true)   annotation (Placement(transformation(
@@ -443,21 +436,20 @@ package Control "models of control mechanism and additional components"
 
     model KidneyFluidBalance
 
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput urineoutflowrate
-        annotation (Placement(transformation(extent={{40,-80},{60,-60}}),
+      Bodylight.Types.RealIO.VolumeFlowRateOutput urineoutflowrate annotation (
+          Placement(transformation(extent={{40,-80},{60,-60}}),
             iconTransformation(extent={{40,-80},{60,-60}})));
-      Physiolibrary.Types.RealIO.VolumeInput plasmaticVolume annotation (
-          Placement(transformation(extent={{46,-12},{86,28}}),
-            iconTransformation(
+      Bodylight.Types.RealIO.VolumeInput plasmaticVolume annotation (Placement(
+            transformation(extent={{46,-12},{86,28}}), iconTransformation(
             extent={{-13,-13},{13,13}},
             rotation=180,
             origin={47,-7})));
-      parameter Physiolibrary.Types.VolumeFlowRate Kud=4.6666666666667e-08;
+      parameter Bodylight.Types.VolumeFlowRate Kud=4.6666666666667e-08;
       //dehydratation
-      parameter Physiolibrary.Types.VolumeFlowRate Kuo=3.4666666666667e-07;
+      parameter Bodylight.Types.VolumeFlowRate Kuo=3.4666666666667e-07;
       //overhydratation
-      parameter Physiolibrary.Types.VolumeFlowRate Jun=1.6666666666667e-08;
-      discrete Physiolibrary.Types.Volume Vpn;
+      parameter Bodylight.Types.VolumeFlowRate Jun=1.6666666666667e-08;
+      discrete Bodylight.Types.Volume Vpn;
     equation
       when {initial()} then
           Vpn = plasmaticVolume;
@@ -479,29 +471,28 @@ package Control "models of control mechanism and additional components"
             extent={{-11,-10},{11,10}},
             rotation=0,
             origin={-77,-4})));
-      Physiolibrary.Population.Components.Population RBC
+      Bodylight.Population.Components.Population RBC
         annotation (Placement(transformation(extent={{-18,-26},{2,-6}})));
-      Physiolibrary.Population.Sources.Growth erythropoiesis(useChangeInput=
-           true) annotation (Placement(transformation(extent={{-46,-30},{-26,
-                -10}})));
-      Physiolibrary.Population.Sources.Growth transfusion
+      Bodylight.Population.Sources.Growth erythropoiesis(useChangeInput=true)
+        annotation (Placement(transformation(extent={{-46,-30},{-26,-10}})));
+      Bodylight.Population.Sources.Growth transfusion
         annotation (Placement(transformation(extent={{-38,14},{-18,34}})));
-      Physiolibrary.Population.Components.Mortality degradation(LifeTime(
+      Bodylight.Population.Components.Mortality degradation(LifeTime(
             displayUnit="d") = 10368000)
         annotation (Placement(transformation(extent={{6,-30},{26,-10}})));
-      Physiolibrary.Population.Sources.Loss hemorrhage
+      Bodylight.Population.Sources.Loss hemorrhage
         annotation (Placement(transformation(extent={{6,16},{26,36}})));
-      Physiolibrary.Types.Constants.PopulationChangeConst
-        RBCBaseSecretionRate(k=1.16e6) "13.7 ml/day (12e12 cells == 2.4 L)"
+      Bodylight.Types.Constants.PopulationChangeConst RBCBaseSecretionRate(k=
+            1.16e6) "13.7 ml/day (12e12 cells == 2.4 L)"
         annotation (Placement(transformation(extent={{-54,4},{-38,16}})));
-      Physiolibrary.Blocks.Factors.SplineLag      EPOEffect(
+      Bodylight.Blocks.Factors.SplineLag EPOEffect(
         HalfTime=3*86400*Modelica.Math.log(2),
         data={{0.0,0.0,0},{1.3,1.0,1.0},{4.0,4.0,0}},
         stateName="[EPO]Delay.Effect",
-      UsePositiveLog10=true,
-      Xscale=1e3) "20 miu/ml = 20e3 iu/m3"
+        UsePositiveLog10=true,
+        Xscale=1e3) "20 miu/ml = 20e3 iu/m3"
         annotation (Placement(transformation(extent={{-46,-14},{-26,6}})));
-      Physiolibrary.Types.BusConnector busConnector
+      Bodylight.Types.BusConnector busConnector
         annotation (Placement(transformation(extent={{-118,10},{-78,50}})));
       Modelica.Blocks.Math.Gain RBCVol(k(unit="m3") = 2.4e-3/12e12)
         "12e12 cells == 2.4 L" annotation (Placement(transformation(
@@ -597,54 +588,53 @@ package Control "models of control mechanism and additional components"
 
     model Plasma2
 
-      Physiolibrary.Osmotic.Sources.SolventInflux transfusion(
-          useSolutionFlowInput=false) annotation (Placement(transformation(
-              extent={{-44,-38},{-24,-18}})));
-      Physiolibrary.Osmotic.Sources.SolventOutflux hemorrhage(
-          useSolutionFlowInput=false) annotation (Placement(transformation(
+      Bodylight.Osmotic.Sources.SolventInflux transfusion(useSolutionFlowInput=
+            false)
+        annotation (Placement(transformation(extent={{-44,-38},{-24,-18}})));
+      Bodylight.Osmotic.Sources.SolventOutflux hemorrhage(useSolutionFlowInput=
+            false) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-34,-54})));
-      Physiolibrary.Osmotic.Sources.SolventInflux IVDrip(
-          useSolutionFlowInput=false) annotation (Placement(transformation(
-              extent={{-44,-48},{-24,-28}})));
-      Physiolibrary.Osmotic.Sources.SolventInflux FoodAndDrink(
-          useSolutionFlowInput=false, SolutionFlow(displayUnit="l/day")=
-          2.4305555555556e-08) annotation (Placement(transformation(
+      Bodylight.Osmotic.Sources.SolventInflux IVDrip(useSolutionFlowInput=false)
+        annotation (Placement(transformation(extent={{-44,-48},{-24,-28}})));
+      Bodylight.Osmotic.Sources.SolventInflux FoodAndDrink(useSolutionFlowInput
+          =false, SolutionFlow(displayUnit="l/day") = 2.4305555555556e-08)
+        annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={-34,-10})));
-      Physiolibrary.Osmotic.Sources.SolventInflux Metabolism(
-          useSolutionFlowInput=false, SolutionFlow(displayUnit="ml/day")=
-          3.4722222222222e-09) annotation (Placement(transformation(
+      Bodylight.Osmotic.Sources.SolventInflux Metabolism(useSolutionFlowInput=
+            false, SolutionFlow(displayUnit="ml/day") = 3.4722222222222e-09)
+        annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={26,-28})));
-      Physiolibrary.Osmotic.Sources.SolventOutflux SkinAndLungsLoss(
-          useSolutionFlowInput=false, SolutionFlow(displayUnit="ml/day")=
+      Bodylight.Osmotic.Sources.SolventOutflux SkinAndLungsLoss(
+          useSolutionFlowInput=false, SolutionFlow(displayUnit="ml/day") =
           1.0416666666667e-08) annotation (Placement(transformation(
             extent={{-11,-11},{11,11}},
             rotation=0,
             origin={53,-27})));
-      Physiolibrary.Osmotic.Sources.SolventOutflux Urine(SolutionFlow(
-            displayUnit="ml/day") = 1.7361111111111e-08,
-          useSolutionFlowInput=true) annotation (Placement(transformation(
+      Bodylight.Osmotic.Sources.SolventOutflux Urine(SolutionFlow(displayUnit=
+              "ml/day") = 1.7361111111111e-08, useSolutionFlowInput=true)
+        annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={0,-28})));
-      Physiolibrary.Osmotic.Sources.SolventOutflux Feces(
-          useSolutionFlowInput=false, SolutionFlow(displayUnit="ml/day")=
-          1.1574074074074e-09) annotation (Placement(transformation(
+      Bodylight.Osmotic.Sources.SolventOutflux Feces(useSolutionFlowInput=false,
+          SolutionFlow(displayUnit="ml/day") = 1.1574074074074e-09) annotation
+        (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={0,-8})));
-      Physiolibrary.Osmotic.Components.Membrane capillaryMembrane(
+      Bodylight.Osmotic.Components.Membrane capillaryMembrane(
         HydraulicPressureIn(displayUnit="mmHg") = 2359.8062572455,
         cond(displayUnit="m3/(Pa.s)") = 3.7265559293265e-11,
         HydraulicPressureOut=-549.2882361498,
         T(displayUnit="K"))
         annotation (Placement(transformation(extent={{4,-70},{24,-50}})));
-      Physiolibrary.Osmotic.Components.OsmoticCell interstitialFluid(
+      Bodylight.Osmotic.Components.OsmoticCell interstitialFluid(
         NumberOfMembraneTypes=2,
         volume_start=0.01175,
         ImpermeableSolutes={0.0061,3.1})
@@ -656,16 +646,16 @@ package Control "models of control mechanism and additional components"
         Kuo(displayUnit="m3/s"),
         Jun(displayUnit="m3/s"))
         annotation (Placement(transformation(extent={{-10,-28},{48,24}})));
-      Physiolibrary.Osmotic.Components.SolventFlux lymphatic(SolutionFlow(
+      Bodylight.Osmotic.Components.SolventFlux lymphatic(SolutionFlow(
             displayUnit="l/day") = 3.45e-08) annotation (Placement(
             transformation(
             extent={{-7,-7},{7,7}},
             rotation=180,
             origin={11,-39})));
-      Physiolibrary.Types.BusConnector busConnector
+      Bodylight.Types.BusConnector busConnector
         annotation (Placement(transformation(extent={{44,-24},{84,16}})));
-      Physiolibrary.Osmotic.Components.OsmoticCell plasma(
-        Simulation=Physiolibrary.Types.SimulationType.NoInit,
+      Bodylight.Osmotic.Components.OsmoticCell plasma(
+        Simulation=Bodylight.Types.SimulationType.NoInit,
         NumberOfMembraneTypes=2,
         ImpermeableSolutes(displayUnit="mmol") = {0.00356,0.82})
         annotation (Placement(transformation(extent={{-26,-70},{-6,-50}})));
@@ -783,27 +773,27 @@ package Control "models of control mechanism and additional components"
 
       DesiredFlowrate desiredFlowrate(flowtime(displayUnit="s") = 1)
         annotation (Placement(transformation(extent={{-4,6},{16,26}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
-         Placement(transformation(extent={{56,-26},{76,-6}}),
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
+          Placement(transformation(extent={{56,-26},{76,-6}}),
             iconTransformation(extent={{82,-100},{102,-80}})));
-      Physiolibrary.Hydraulic.Sources.UnlimitedPump volumeRefill(
+      Bodylight.Hydraulic.Sources.UnlimitedPump volumeRefill(
           useSolutionFlowInput=true)
         annotation (Placement(transformation(extent={{-14,-26},{6,-6}})));
       Modelica.Blocks.Logical.Switch switch1
         annotation (Placement(transformation(extent={{14,-4},{0,10}})));
-      Physiolibrary.Types.Constants.VolumeFlowRateConst zeroRefill(k(
-            displayUnit="l/min") = 0) annotation (Placement(transformation(
+      Bodylight.Types.Constants.VolumeFlowRateConst zeroRefill(k(displayUnit=
+              "l/min") = 0) annotation (Placement(transformation(
             extent={{-8,-6},{8,6}},
             rotation=180,
             origin={38,-4})));
-      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure
+      Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure
         annotation (Placement(transformation(extent={{70,10},{50,30}})));
       Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0)
         annotation (Placement(transformation(extent={{46,8},{30,24}})));
-      Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
             displayUnit="ml/(mmHg.s)") = 7.5006157584566e-08)
         annotation (Placement(transformation(extent={{28,-26},{48,-6}})));
-      Physiolibrary.Types.BusConnector busConnector
+      Bodylight.Types.BusConnector busConnector
         annotation (Placement(transformation(extent={{-32,18},{8,58}})));
     equation
     /*  if desiredFlowrate.volumeflowrate < 0 then
@@ -922,13 +912,13 @@ above 0 mmHg.")}));
       KidneyPO2Estimate kidneyPO2Estimate(spline(data=[0.3, 0, 0; 0.4, 36.3,
               1; 0.5, 60, 0]))
         annotation (Placement(transformation(extent={{10,-96},{30,-76}})));
-      Physiolibrary.Types.BusConnector busConnector
+      Bodylight.Types.BusConnector busConnector
         annotation (Placement(transformation(extent={{-20,-8},{20,32}})));
       Modelica.Blocks.Math.Division hematocrit
         annotation (Placement(transformation(extent={{8,-64},{28,-44}})));
       Modelica.Blocks.Math.Add3 BloodVolume
         annotation (Placement(transformation(extent={{12,34},{26,48}})));
-      Physiolibrary.Types.Constants.FractionConst initialHematocrit(k=0.4)
+      Bodylight.Types.Constants.FractionConst initialHematocrit(k=0.4)
         annotation (Placement(transformation(extent={{-2,68},{6,76}})));
       Modelica.Blocks.Math.Product InitialRBCVolume
         annotation (Placement(transformation(extent={{14,64},{24,74}})));
@@ -1065,21 +1055,20 @@ above 0 mmHg.")}));
     end BloodProperties;
 
     model DesiredFlowrate "control total blood volume"
-      parameter Physiolibrary.Types.Time flowtime=0.1;
+      parameter Bodylight.Types.Time flowtime=0.1;
       parameter Boolean enabled=true;
-      Physiolibrary.Types.RealIO.VolumeInput volume annotation (Placement(
+      Bodylight.Types.RealIO.VolumeInput volume annotation (Placement(
             transformation(extent={{16,60},{56,100}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={14,72})));
-      Physiolibrary.Types.RealIO.VolumeInput desiredVolume annotation (
-          Placement(transformation(extent={{-72,56},{-32,96}}),
-            iconTransformation(
+      Bodylight.Types.RealIO.VolumeInput desiredVolume annotation (Placement(
+            transformation(extent={{-72,56},{-32,96}}), iconTransformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-68,72})));
-      Physiolibrary.Types.RealIO.VolumeFlowRateOutput volumeflowrate
-        annotation (Placement(transformation(extent={{88,18},{108,38}}),
+      Bodylight.Types.RealIO.VolumeFlowRateOutput volumeflowrate annotation (
+          Placement(transformation(extent={{88,18},{108,38}}),
             iconTransformation(extent={{82,8},{116,42}})));
     equation
       volumeflowrate = if enabled then (desiredVolume - volume)/flowtime
@@ -1116,7 +1105,7 @@ above 0 mmHg.")}));
       extends Plasma2(
         hemorrhage(useSolutionFlowInput=true),
         transfusion(useSolutionFlowInput=true),
-        plasma(Simulation=Physiolibrary.Types.SimulationType.NoInit));
+        plasma(Simulation=Bodylight.Types.SimulationType.NoInit));
     equation
       connect(hemorrhage.solutionFlow, busConnector.plasmableed)
         annotation (Line(
@@ -1143,7 +1132,7 @@ above 0 mmHg.")}));
       extends RedBloodCells2(
         transfusion(useChangeInput=true),
         hemorrhage(useChangeInput=true),
-        RBC(Simulation=Physiolibrary.Types.SimulationType.NoInit));
+        RBC(Simulation=Bodylight.Types.SimulationType.NoInit));
     equation
       connect(transfusion.populationChange, busConnector.RBCtransfusion)
         annotation (Line(
@@ -1171,13 +1160,13 @@ above 0 mmHg.")}));
   /*  Physiolibrary.Types.BusConnector busConnector annotation (Placement(
         transformation(extent={{-40,2},{0,42}}), iconTransformation(
           extent={{-38,4},{2,44}})));*/
-    replaceable BloodVolume.Plasma2 plasma(plasma(Simulation=Physiolibrary.Types.SimulationType.NoInit))
+    replaceable BloodVolume.Plasma2 plasma(plasma(Simulation=Bodylight.Types.SimulationType.NoInit))
       constrainedby BloodVolume.Plasma2
       annotation (Placement(transformation(extent={{-28,26},{4,58}})));
                                //(plasma(volume_start=bloodProperties.BloodVolume.y))
-    replaceable BloodVolume.RedBloodCells2 redBloodCells(RBC(
-          population_start=2, Simulation=Physiolibrary.Types.SimulationType.NoInit))
-      constrainedby BloodVolume.RedBloodCells2
+    replaceable BloodVolume.RedBloodCells2 redBloodCells(RBC(population_start=2,
+          Simulation=Bodylight.Types.SimulationType.NoInit)) constrainedby
+      BloodVolume.RedBloodCells2
       annotation (Placement(transformation(extent={{-20,-18},{14,14}})));
     BloodVolume.BloodProperties bloodProperties annotation (Placement(
           transformation(rotation=0, extent={{-18,-40},{10,-12}})));
@@ -1225,9 +1214,9 @@ above 0 mmHg.")}));
   end BloodVolumeControl;
 
   model MeanAortaPressureMeasurement
-    extends Physiolibrary.Hydraulic.Sensors.PressureMeasure;
-    import Physiolibrary.Types.RealIO.*;
-    import Physiolibrary.Types.*;
+    extends Bodylight.Hydraulic.Sensors.PressureMeasure;
+    import Bodylight.Types.RealIO.*;
+    import Bodylight.Types.*;
     discrete PressureOutput Pmean(start=11300)
       "Mean pressure during heart cycle" annotation (Placement(
           transformation(extent={{-10,-36},{10,-16}}), iconTransformation(
@@ -1262,9 +1251,9 @@ above 0 mmHg.")}));
 
   model BloodFlowMeasurement
     "measures flow, diastolic, systolic and mean pressure"
-    extends Physiolibrary.Hydraulic.Sensors.FlowMeasure;
-    import Physiolibrary.Types.RealIO.*;
-    import Physiolibrary.Types.*;
+    extends Bodylight.Hydraulic.Sensors.FlowMeasure;
+    import Bodylight.Types.RealIO.*;
+    import Bodylight.Types.*;
     PressureOutput Ps "Systolic pressure during heart cycle" annotation (
         Placement(transformation(extent={{-72,-42},{-52,-22}}),
           iconTransformation(
@@ -1283,19 +1272,18 @@ above 0 mmHg.")}));
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={-42,-102})));
-    Physiolibrary.Types.RealIO.VolumeOutput SV "systolic volume"
-      annotation (Placement(transformation(extent={{22,-42},{42,-22}}),
+    Bodylight.Types.RealIO.VolumeOutput SV "systolic volume" annotation (
+        Placement(transformation(extent={{22,-42},{42,-22}}),
           iconTransformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={32,-100})));
-    Physiolibrary.Types.RealIO.VolumeFlowRateOutput CO "Cardiac output"
-      annotation (Placement(transformation(extent={{50,-40},{70,-20}}),
-          iconTransformation(
+    Bodylight.Types.RealIO.VolumeFlowRateOutput CO "Cardiac output" annotation
+      (Placement(transformation(extent={{50,-40},{70,-20}}), iconTransformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={52,-100})));
-    Physiolibrary.Types.Volume Volume(start=0)
+    Bodylight.Types.Volume Volume(start=0)
       "sum of volume through cyrdiac cycle";
     Real SumPressure(start=0) "sum of pressure of cardiac cycle";
     Pressure Pmin(start=133000);
@@ -1303,7 +1291,7 @@ above 0 mmHg.")}));
     discrete Time T0(start=0) "start of cardiac cycle ";
     discrete Time HP "length of cardiac cycle";
     Boolean b;
-    Physiolibrary.Types.RealIO.FrequencyInput HR annotation (Placement(
+    Bodylight.Types.RealIO.FrequencyInput HR annotation (Placement(
           transformation(extent={{-14,58},{26,98}}), iconTransformation(
           extent={{-20,-20},{20,20}},
           rotation=270,
@@ -1383,9 +1371,9 @@ above 0 mmHg.")}));
   end BloodFlowMeasurement;
 
   model AortaPressureMeasurement
-    extends Physiolibrary.Hydraulic.Sensors.PressureMeasure;
-    import Physiolibrary.Types.RealIO.*;
-    import Physiolibrary.Types.*;
+    extends Bodylight.Hydraulic.Sensors.PressureMeasure;
+    import Bodylight.Types.RealIO.*;
+    import Bodylight.Types.*;
     discrete PressureOutput Ps "Systolic pressure during heart cycle"
       annotation (Placement(transformation(extent={{-72,-42},{-52,-22}}),
           iconTransformation(

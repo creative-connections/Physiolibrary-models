@@ -4,7 +4,7 @@ package Burkhoff
   model HemodynamicsBurkhoff_shallow
 
         extends Cardiovascular.Icons.Runnable_Shallow;
-    import Physiolibrary.Hydraulic.Components.*;
+    import Bodylight.Hydraulic.Components.*;
     ElasticVessel Cvs(
       volume_start=0.002701,
       ZeroPressureVolume=0.00223,
@@ -131,8 +131,7 @@ package Burkhoff
       Alpha=24000,
       Ees=205316476.6191)
       annotation (Placement(transformation(extent={{88,16},{112,36}})));
-    Physiolibrary.Types.Constants.FrequencyConst heartRate(k=
-          1.3333333333333)
+    Bodylight.Types.Constants.FrequencyConst heartRate(k=1.3333333333333)
       annotation (Placement(transformation(extent={{-86,34},{-78,42}})));
     Modelica.Blocks.Math.Gain RAVGain(k=0.02) annotation (Placement(
           transformation(
@@ -152,10 +151,10 @@ package Burkhoff
           extent={{-4,-4},{4,4}},
           rotation=270,
           origin={176,14})));
-    Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure
+    Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure
       annotation (Placement(transformation(extent={{100,-22},{112,-12}})));
-    Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure1
-      annotation (Placement(transformation(
+    Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure1 annotation (
+        Placement(transformation(
           extent={{7,-5},{-7,5}},
           rotation=0,
           origin={19,-53})));
@@ -167,7 +166,7 @@ package Burkhoff
           extent={{-3,-3},{3,3}},
           rotation=270,
           origin={109,11})));
-    Physiolibrary.Types.Constants.PressureConst IntraThoracicPressure(k=0)
+    Bodylight.Types.Constants.PressureConst IntraThoracicPressure(k=0)
       annotation (Placement(transformation(
           extent={{-4,-4},{4,4}},
           rotation=0,
@@ -468,7 +467,7 @@ package Burkhoff
     extends Modelica.Icons.UtilitiesPackage;
     model Pulmonary
       extends Cardiovascular.Interfaces.Pulmonary;
-      import Physiolibrary.Hydraulic.Components.*;
+      import Bodylight.Hydraulic.Components.*;
       Resistor Rcsp(Resistance(displayUnit="(mmHg.s)/ml") = 2666447.7483)
         annotation (Placement(transformation(extent={{-84,-10},{-64,10}})));
     ElasticVessel      Capprox(
@@ -542,7 +541,7 @@ package Burkhoff
 
     model Systemic
       extends Cardiovascular.Interfaces.Systemic;
-        import Physiolibrary.Hydraulic.Components.*;
+        import Bodylight.Hydraulic.Components.*;
       Resistor Rcprox(Resistance(displayUnit="(mmHg.s)/ml") = 2666447.7483)
         annotation (Placement(transformation(extent={{86,-10},{66,10}})));
     ElasticVessel Caprox(
@@ -552,7 +551,7 @@ package Burkhoff
         annotation (Placement(transformation(extent={{44,-10},{64,10}})));
       Resistor Rcs(Resistance(displayUnit="(mmHg.s)/ml") = 3199737.29796)
         annotation (Placement(transformation(extent={{42,-10},{22,10}})));
-      Physiolibrary.Hydraulic.Components.ElasticVessel Cas(
+      Bodylight.Hydraulic.Components.ElasticVessel Cas(
         volume_start=0.000834,
         ZeroPressureVolume=0.0007,
         Compliance=1.2751046789376e-08)
@@ -632,7 +631,7 @@ package Burkhoff
             extent={{-17,-13},{17,13}},
             rotation=0,
             origin={31,3})));
-      Physiolibrary.Hydraulic.Components.IdealValve MV(_Gon(displayUnit=
+      Bodylight.Hydraulic.Components.IdealValve MV(_Gon(displayUnit=
               "ml/(mmHg.s)") = 3.0002463033826e-06) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -651,13 +650,13 @@ package Burkhoff
         ZeroPressureVolume=5e-06,
         useExternalPressureInput=true) annotation (Placement(transformation(
               extent={{-38,-50},{-18,-30}})));
-      Physiolibrary.Hydraulic.Components.IdealValve AOV(_Gon(displayUnit=
+      Bodylight.Hydraulic.Components.IdealValve AOV(_Gon(displayUnit=
               "ml/(mmHg.s)") = 3.7503078792283e-06) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={-52,-40})));
-      Physiolibrary.Hydraulic.Components.IdealValve PV(_Gon(displayUnit=
+      Bodylight.Hydraulic.Components.IdealValve PV(_Gon(displayUnit=
               "ml/(mmHg.s)") = 3.7503078792283e-06) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -677,7 +676,7 @@ package Burkhoff
         Beta(displayUnit="mmHg") = 45.3296117211,
         Ees=50662507.2177)
         annotation (Placement(transformation(extent={{16,64},{50,92}})));
-      Physiolibrary.Hydraulic.Components.IdealValve TV(_Gon(displayUnit=
+      Bodylight.Hydraulic.Components.IdealValve TV(_Gon(displayUnit=
               "ml/(mmHg.s)") = 3.0002463033826e-06) annotation (Placement(
             transformation(
             extent={{-10,-10},{10,10}},
@@ -696,7 +695,7 @@ package Burkhoff
         volume_start=7.3e-05,
         ZeroPressureVolume=5e-06)
         annotation (Placement(transformation(extent={{-60,32},{-40,52}})));
-      replaceable Physiolibrary.Types.Constants.FrequencyConst heartRate(k=
+      replaceable Bodylight.Types.Constants.FrequencyConst heartRate(k=
             1.3333333333333)
         annotation (Placement(transformation(extent={{-98,8},{-84,22}})));
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
@@ -717,9 +716,9 @@ package Burkhoff
             extent={{-6,-6},{6,6}},
             rotation=180,
             origin={62,-8})));
-      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure
+      Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure
         annotation (Placement(transformation(extent={{18,52},{4,64}})));
-      Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure1
+      Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure1
         annotation (Placement(transformation(extent={{-14,-58},{0,-48}})));
     equation
       connect(rightHeartInflow, RA.q_in) annotation (Line(
@@ -881,9 +880,9 @@ package Burkhoff
 
     model ElasticVesselWithSVandP
       "elastic vessel computes aditionally stressed volume and pressure"
-      extends Physiolibrary.Hydraulic.Components.ElasticVessel;
-      Physiolibrary.Types.RealIO.VolumeOutput StressedVolume annotation (
-          Placement(transformation(
+      extends Bodylight.Hydraulic.Components.ElasticVessel;
+      Bodylight.Types.RealIO.VolumeOutput StressedVolume annotation (Placement(
+            transformation(
             extent={{-20,-20},{20,20}},
             rotation=270,
             origin={-88,-100}), iconTransformation(
@@ -900,7 +899,7 @@ package Burkhoff
 
     partial model HeartElastance
       "Elastance of heart atria and ventricules by Burkhoff"
-      import Physiolibrary.Types.*;
+      import Bodylight.Types.*;
       RealIO.VolumeInput Vs "Stressed volume" annotation (Placement(
           visible=true,
           transformation(
@@ -942,9 +941,9 @@ package Burkhoff
             extent={{-10,-10},{10,10}},
             rotation=270,
             origin={30,-86})));
-      Physiolibrary.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/
-            Ees) = 1/mes if useEs_extInput annotation (Placement(
-            transformation(extent={{64,56},{104,96}}), iconTransformation(
+      Bodylight.Types.RealIO.HydraulicComplianceInput Es_ext(start=1/Ees) = 1/
+        mes if useEs_extInput annotation (Placement(transformation(extent={{64,
+                56},{104,96}}), iconTransformation(
             extent={{-13,-13},{13,13}},
             rotation=180,
             origin={87,67})));
@@ -1030,10 +1029,10 @@ package Burkhoff
     end VentricularElastance;
 
     model HeartIntervals
-      discrete Physiolibrary.Types.Time HP(start=0)
+      discrete Bodylight.Types.Time HP(start=0)
         "heart period - duration of cardiac cycle";
       Boolean b(start=false);
-      Physiolibrary.Types.RealIO.FrequencyInput HR annotation (Placement(
+      Bodylight.Types.RealIO.FrequencyInput HR annotation (Placement(
           transformation(
             extent={{-134.0,8.0},{-94.0,48.0}},
             origin={1.3363,-48.0},
@@ -1043,14 +1042,14 @@ package Burkhoff
             origin={-26.2991,67.6},
             rotation=0),
           visible=true));
-      Physiolibrary.Types.Time Tasyst
+      Bodylight.Types.Time Tasyst
         "time elapsed from the beginning of atrial systole";
-      Physiolibrary.Types.Time Tvsyst
+      Bodylight.Types.Time Tvsyst
         "time elapsed from the beginning of ventricular systole";
-      parameter Physiolibrary.Types.Time AVDelay(displayUnit="s") = 0.160
+      parameter Bodylight.Types.Time AVDelay(displayUnit="s") = 0.160
         "AV interval";
-      Physiolibrary.Types.Time T0 "start time of cardiac cycle";
-      Physiolibrary.Types.Time EDTV "Ventricular end Diastolic Time";
+      Bodylight.Types.Time T0 "start time of cardiac cycle";
+      Bodylight.Types.Time EDTV "Ventricular end Diastolic Time";
     equation
       b = time - pre(T0) >= pre(HP);
       when {initial(),b} then

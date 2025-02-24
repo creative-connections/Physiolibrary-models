@@ -6,19 +6,19 @@ package Interfaces
   //   Physiolibrary.Types.Volume V "Volume";
     parameter Boolean useLVCannula = false;
 
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a rightHeartInflow
-      annotation (Placement(transformation(extent={{-110,30},{-90,50}}),
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a rightHeartInflow annotation
+      (Placement(transformation(extent={{-110,30},{-90,50}}),
           iconTransformation(extent={{-108,-30},{-88,-10}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b rightHeartOutflow
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_b rightHeartOutflow
       annotation (Placement(transformation(extent={{90,30},{110,50}}),
           iconTransformation(extent={{-110,10},{-90,30}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a leftHeartInflow
-      annotation (Placement(transformation(extent={{90,-30},{110,-10}}),
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a leftHeartInflow annotation (
+        Placement(transformation(extent={{90,-30},{110,-10}}),
           iconTransformation(extent={{90,10},{110,30}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b leftHeartOutflow
-      annotation (Placement(transformation(extent={{-110,-30},{-90,-10}}),
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_b leftHeartOutflow annotation
+      (Placement(transformation(extent={{-110,-30},{-90,-10}}),
           iconTransformation(extent={{90,-28},{110,-8}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a LVCannula if useLVCannula
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a LVCannula if useLVCannula
       annotation (Placement(transformation(extent={{40,-78},{60,-58}}),
           iconTransformation(extent={{72,-70},{92,-50}})));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -35,19 +35,21 @@ package Interfaces
   end Heart;
 
   partial model Systemic "Abstract systemic circulation submodel"
-    extends Physiolibrary.Icons.SystemicCirculation;
+    extends Bodylight.Icons.SystemicCirculation;
     //  extends Physiolibrary.Hydraulic.Interfaces.OnePort;
 
   //   Physiolibrary.Types.Volume V "Total stressed blood volume of the systemic circulation";
 
     parameter Boolean useAortalCanulla = false;
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a q_in annotation (
-        Placement(transformation(extent={{90,-10},{110,10}}),
-          iconTransformation(extent={{90,-10},{110,10}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b q_out annotation (
-        Placement(transformation(extent={{-110,-10},{-90,10}}),
-          iconTransformation(extent={{-110,-10},{-90,10}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a AortaCannulla if useAortalCanulla annotation (Placement(transformation(extent={{60,-100},{80,-80}}), iconTransformation(extent={{60,-100},{80,-80}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a q_in annotation (Placement(
+          transformation(extent={{90,-10},{110,10}}), iconTransformation(extent
+            ={{90,-10},{110,10}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_b q_out annotation (Placement(
+          transformation(extent={{-110,-10},{-90,10}}), iconTransformation(
+            extent={{-110,-10},{-90,10}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a AortaCannulla
+      if useAortalCanulla annotation (Placement(transformation(extent={{60,-100},
+              {80,-80}}), iconTransformation(extent={{60,-100},{80,-80}})));
 
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
               -100,-100},{100,100}}), graphics), Icon(coordinateSystem(
@@ -60,16 +62,16 @@ package Interfaces
   end Systemic;
 
   partial model Pulmonary "Abstract pulmonary circulation submodel"
-    extends Physiolibrary.Icons.PulmonaryCirculation;
+    extends Bodylight.Icons.PulmonaryCirculation;
     //  extends Physiolibrary.Hydraulic.Interfaces.OnePort;
   //   Physiolibrary.Types.Volume V "Total stressed blood volume of the pulmonary circulation";
 
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a q_in annotation (
-        Placement(transformation(extent={{-110,-10},{-90,10}}),
-          iconTransformation(extent={{-108,-12},{-88,8}})));
-    Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b q_out annotation (
-        Placement(transformation(extent={{90,-10},{110,10}}),
-          iconTransformation(extent={{88,-16},{108,4}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a q_in annotation (Placement(
+          transformation(extent={{-110,-10},{-90,10}}), iconTransformation(
+            extent={{-108,-12},{-88,8}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_b q_out annotation (Placement(
+          transformation(extent={{90,-10},{110,10}}), iconTransformation(extent
+            ={{88,-16},{108,4}})));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}), graphics={Text(
             extent={{-156,-38},{156,-64}},
@@ -141,25 +143,25 @@ package Controlled
 
   model Pulmonary "Abstract controlled pulmonary circulation submodel"
     extends Cardiovascular.Interfaces.Pulmonary;
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-          transformation(extent={{-100,14},{-60,54}}), iconTransformation(
-            extent={{-100,12},{-60,52}})));
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{-100,14},{-60,54}}), iconTransformation(
+              extent={{-100,12},{-60,52}})));
   end Pulmonary;
 
   partial model Heart "Abstract controlled heart circulation submodel"
     extends Cardiovascular.Interfaces.Heart;
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-          transformation(extent={{-118,66},{-78,106}}), iconTransformation(
-            extent={{-100,-90},{-60,-50}})));
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{-118,66},{-78,106}}), iconTransformation(
+              extent={{-100,-90},{-60,-50}})));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
                 {{-100,-100},{100,100}}), graphics));
   end Heart;
 
   model Systemic "Abstract controlled systemic circulation submodel"
     extends Cardiovascular.Interfaces.Systemic;
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-          transformation(extent={{-100,14},{-60,54}}), iconTransformation(
-            extent={{-96,-50},{-56,-10}})));
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{-100,14},{-60,54}}), iconTransformation(
+              extent={{-96,-50},{-56,-10}})));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
                 {{-100,-100},{100,100}}), graphics));
   end Systemic;
@@ -167,12 +169,12 @@ package Controlled
   partial model LongTermControl
     "Abstract submodel of long-term volume control"
 
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-            transformation(extent={{0,-8},{40,32}}), iconTransformation(
-              extent={{-38,4},{2,44}})));
-      Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{0,-8},{40,32}}), iconTransformation(extent=
+                {{-38,4},{2,44}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
           Placement(transformation(extent={{84,-70},{104,-50}}),
-          iconTransformation(extent={{84,-70},{104,-50}})));
+            iconTransformation(extent={{84,-70},{104,-50}})));
     Model.Control.BloodVolume.VolumeRefill2 volumeRefill
       annotation (Placement(transformation(extent={{46,-38},{86,6}})));
   equation
@@ -202,9 +204,9 @@ package Controlled
   partial model ShortTermControl
     "Abstract submodel of short-term CVS parameters values"
 
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-          transformation(extent={{-28,14},{12,54}}), iconTransformation(
-            extent={{60,70},{100,110}})));
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{-28,14},{12,54}}), iconTransformation(
+              extent={{60,70},{100,110}})));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Bitmap(extent={{-80,-80},{80,80}},
               fileName=
@@ -219,9 +221,9 @@ package Controlled
 
   model ScenarioControl "Abstract submodel of possible scenarios"
 
-    Physiolibrary.Types.BusConnector busConnector annotation (Placement(
-          transformation(extent={{60,70},{100,110}}), iconTransformation(
-            extent={{60,70},{100,110}})));
+      Bodylight.Types.BusConnector busConnector annotation (Placement(
+            transformation(extent={{60,70},{100,110}}), iconTransformation(
+              extent={{60,70},{100,110}})));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics={Rectangle(
             extent={{-96,80},{98,-60}},

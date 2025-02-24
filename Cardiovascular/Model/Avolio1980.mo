@@ -4,39 +4,40 @@ package Avolio1980
       package Parts
         extends Modelica.Icons.UtilitiesPackage;
         model ArterialSegment
-          parameter Physiolibrary.Types.Height L "length";//L=0.094,R=0.002,h=0.0005,E=4000.0)
-          parameter Physiolibrary.Types.Height R "radius";
-          parameter Physiolibrary.Types.Height h=0.0005 "wall thickness";
-          parameter Physiolibrary.Types.Pressure E=1600000.0
-            "Young modulus N/m^2";
-          parameter Modelica.SIunits.Density ro=1060;
-          parameter Modelica.SIunits.DynamicViscosity mi=0.004;
+      parameter Bodylight.Types.Height L "length";        //L=0.094,R=0.002,h=0.0005,E=4000.0)
+      parameter Bodylight.Types.Height R "radius";
+      parameter Bodylight.Types.Height h=0.0005 "wall thickness";
+      parameter Bodylight.Types.Pressure E=1600000.0 "Young modulus N/m^2";
+      parameter Modelica.Units.SI.Density ro=1060;
+      parameter Modelica.Units.SI.DynamicViscosity mi=0.004;
           parameter Boolean terminal = false;
-          parameter Physiolibrary.Types.HydraulicResistance Rbref=1e8; //per KK
+      parameter Bodylight.Types.HydraulicResistance Rbref=1e8;         //per KK
           parameter Real kkCfactor = 3.53;
           parameter Real kkLfactor =  8 * (0.2057 - 0.0392);
           parameter Real myfactor = 1;
         //  Physiolibrary.Types.Conductance Z0;
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
-              Placement(transformation(extent={{-110,-10},{-90,10}}),
-                iconTransformation(extent={{-120,-20},{-80,20}})));
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
-              Placement(transformation(extent={{90,-10},{110,10}}), iconTransformation(
-                  extent={{80,-20},{120,20}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
+          Placement(transformation(extent={{-110,-10},{-90,10}}),
+            iconTransformation(extent={{-120,-20},{-80,20}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
+          Placement(transformation(extent={{90,-10},{110,10}}),
+            iconTransformation(extent={{80,-20},{120,20}})));
           ElasticVesselNP                                  elastance(final Compliance=kkCfactor*Modelica.Constants.pi*R^3*L/(E*h),
             volume_start=R^2*L*Modelica.Constants.pi,
             ZeroPressureVolume=R^2*L*Modelica.Constants.pi)
             annotation (Placement(transformation(extent={{-14,-22},{30,22}})));
-          Physiolibrary.Hydraulic.Components.Resistor resistance(final Resistance=8*mi*L/(Modelica.Constants.pi*R^4))
-            annotation (Placement(transformation(extent={{-58,-22},{-14,22}})));
-          Physiolibrary.Hydraulic.Components.Inertia inertia(final I=(kkLfactor*ro*L)/(myfactor*Modelica.Constants.pi*R^2),
-            Simulation=Physiolibrary.Types.SimulationType.NoInit,
-            volumeFlow_start(displayUnit="l/min") = 0)
-            annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
+      Bodylight.Hydraulic.Components.Resistor resistance(final Resistance=8*mi*
+            L/(Modelica.Constants.pi*R^4))
+        annotation (Placement(transformation(extent={{-58,-22},{-14,22}})));
+      Bodylight.Hydraulic.Components.Inertia inertia(
+        final I=(kkLfactor*ro*L)/(myfactor*Modelica.Constants.pi*R^2),
+        Simulation=Bodylight.Types.SimulationType.NoInit,
+        volumeFlow_start(displayUnit="l/min") = 0)
+        annotation (Placement(transformation(extent={{-90,-10},{-70,10}})));
 
-          Physiolibrary.Hydraulic.Components.Conductor terminalresistance(final
-              Conductance=if terminal then R/(Rbref*h) else 1/Modelica.Constants.eps)
-            annotation (Placement(transformation(extent={{42,-22},{86,22}})));
+      Bodylight.Hydraulic.Components.Conductor terminalresistance(final
+          Conductance=if terminal then R/(Rbref*h) else 1/Modelica.Constants.eps)
+        annotation (Placement(transformation(extent={{42,-22},{86,22}})));
         equation
           connect(elastance.q_in, terminalresistance.q_in) annotation (Line(
               points={{8,0},{34,0},{34,4.44089e-16},{42,4.44089e-16}},
@@ -76,76 +77,75 @@ package Avolio1980
 
         model ElasticVesselNP
           "Elastic container for blood vessels, bladder, lumens without collapse"
-         extends Physiolibrary.Icons.ElasticBalloon;
-         extends Physiolibrary.SteadyStates.Interfaces.SteadyState(state_start=
+         extends Bodylight.Icons.ElasticBalloon;
+         extends Bodylight.SteadyStates.Interfaces.SteadyState(    state_start=
                 volume_start, storeUnit="ml");
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a q_in
-            annotation (Placement(transformation(extent={{-14,-14},{14,14}})));
-          parameter Physiolibrary.Types.Volume volume_start=1e-11
-            "Volume start value"
-            annotation (Dialog(group="Initialization"));                                 //default = 1e-5 ml
-          Physiolibrary.Types.Volume excessVolume
-            "Additional volume, that generate pressure";
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_a q_in
+        annotation (Placement(transformation(extent={{-14,-14},{14,14}})));
+      parameter Bodylight.Types.Volume volume_start=1e-11 "Volume start value"
+        annotation (Dialog(group="Initialization"));                                     //default = 1e-5 ml
+      Bodylight.Types.Volume excessVolume
+        "Additional volume, that generate pressure";
 
            parameter Boolean useV0Input = false
             "=true, if zero-pressure-volume input is used"
             annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
 
-           parameter Physiolibrary.Types.Volume ZeroPressureVolume=1e-11
-            "Maximal volume, that does not generate pressure if useV0Input=false"
-            annotation (Dialog(enable=not useV0Input)); //default = 1e-5 ml
+      parameter Bodylight.Types.Volume ZeroPressureVolume=1e-11
+        "Maximal volume, that does not generate pressure if useV0Input=false"
+        annotation (Dialog(enable=not useV0Input));     //default = 1e-5 ml
 
-            parameter Physiolibrary.Types.Volume CollapsingPressureVolume=1e-12
-            "Maximal volume, which generate negative collapsing pressure"; //default = 1e-6 ml
+      parameter Bodylight.Types.Volume CollapsingPressureVolume=1e-12
+        "Maximal volume, which generate negative collapsing pressure";     //default = 1e-6 ml
 
-           Physiolibrary.Types.RealIO.VolumeInput zeroPressureVolume(start=
-                ZeroPressureVolume)=zpv if useV0Input annotation (Placement(
-                transformation(
-                extent={{-20,-20},{20,20}},
-                rotation=270,
-                origin={-80,80})));
+      Bodylight.Types.RealIO.VolumeInput zeroPressureVolume(start=
+            ZeroPressureVolume) = zpv if useV0Input annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={-80,80})));
           parameter Boolean useComplianceInput = false
             "=true, if compliance input is used"
             annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-          parameter Physiolibrary.Types.HydraulicCompliance Compliance=1
-            "Compliance if useComplianceInput=false"
-            annotation (Dialog(enable=not useComplianceInput));
+      parameter Bodylight.Types.HydraulicCompliance Compliance=1
+        "Compliance if useComplianceInput=false"
+        annotation (Dialog(enable=not useComplianceInput));
 
-          Physiolibrary.Types.RealIO.HydraulicComplianceInput compliance(start=
-                Compliance)=c if useComplianceInput annotation (Placement(
-                transformation(
-                extent={{-20,-20},{20,20}},
-                rotation=270,
-                origin={0,80})));
+      Bodylight.Types.RealIO.HydraulicComplianceInput compliance(start=
+            Compliance) = c if useComplianceInput annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,80})));
           parameter Boolean useExternalPressureInput = false
             "=true, if external pressure input is used"
             annotation(Evaluate=true, HideResult=true, choices(checkBox=true),Dialog(group="External inputs/outputs"));
-          parameter Physiolibrary.Types.Pressure ExternalPressure=0
-            "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
-            annotation (Dialog(enable=not useExternalPressureInput));
-          parameter Physiolibrary.Types.Pressure MinimalCollapsingPressure=-10132500;
-          Physiolibrary.Types.RealIO.PressureInput externalPressure(start=
-                ExternalPressure)=ep if useExternalPressureInput annotation (Placement(
-                transformation(
-                extent={{-20,-20},{20,20}},
-                rotation=270,
-                origin={80,80})));
+      parameter Bodylight.Types.Pressure ExternalPressure=0
+        "External pressure. Set zero if internal pressure is relative to external. Valid only if useExternalPressureInput=false."
+        annotation (Dialog(enable=not useExternalPressureInput));
+      parameter Bodylight.Types.Pressure MinimalCollapsingPressure=-10132500;
+      Bodylight.Types.RealIO.PressureInput externalPressure(start=
+            ExternalPressure) = ep if useExternalPressureInput annotation (
+          Placement(transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={80,80})));
 
-          Physiolibrary.Types.RealIO.VolumeOutput volume annotation (Placement(
-                transformation(
-                extent={{-20,-20},{20,20}},
-                rotation=270,
-                origin={0,-100}), iconTransformation(
-                extent={{-20,-20},{20,20}},
-                rotation=270,
-                origin={60,-100})));
+      Bodylight.Types.RealIO.VolumeOutput volume annotation (Placement(
+            transformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={0,-100}), iconTransformation(
+            extent={{-20,-20},{20,20}},
+            rotation=270,
+            origin={60,-100})));
 
     protected
-          Physiolibrary.Types.Volume zpv;
-          Physiolibrary.Types.HydraulicCompliance c;
-          Physiolibrary.Types.Pressure ep;
-          parameter Physiolibrary.Types.Pressure a=MinimalCollapsingPressure/log(
-              Modelica.Constants.eps);
+      Bodylight.Types.Volume zpv;
+      Bodylight.Types.HydraulicCompliance c;
+      Bodylight.Types.Pressure ep;
+      parameter Bodylight.Types.Pressure a=MinimalCollapsingPressure/log(
+          Modelica.Constants.eps);
 
         equation
           if not useV0Input then
@@ -802,12 +802,12 @@ package Avolio1980
               extent={{-10,-10},{10,10}},
               rotation=270,
               origin={-126,-314})));
-        Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
-            Placement(transformation(extent={{-28,-44},{-8,-24}}),
-              iconTransformation(extent={{-310,-10},{-290,10}})));
-        Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
-            Placement(transformation(extent={{290,-10},{310,10}}),
-              iconTransformation(extent={{290,-10},{310,10}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (Placement(
+          transformation(extent={{-28,-44},{-8,-24}}), iconTransformation(
+            extent={{-310,-10},{-290,10}})));
+    Bodylight.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (Placement(
+          transformation(extent={{290,-10},{310,10}}), iconTransformation(
+            extent={{290,-10},{310,10}})));
       equation
         connect(a2.port_b, a3.port_a) annotation (Line(
             points={{-18,36},{8,36}},
@@ -1809,87 +1809,102 @@ package Avolio1980
 
       model PulsatileCirculation
         "Model of cardiovascular system with pulsatile dynamic"
-                                extends Physiolibrary.Icons.CardioVascular;
-        Physiolibrary.Hydraulic.Components.Conductor RPulmonaryVeins(
-            useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-            7.425609600872e-08)                                      annotation(Placement(transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}})));
-        Physiolibrary.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
-            volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
-                "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}})));
-        Physiolibrary.Hydraulic.Components.Conductor RPulmonaryArtery(
-            useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-            2.2216823876548e-07)                                      annotation(Placement(transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}})));
-        Physiolibrary.Hydraulic.Components.Inertia pulmonaryArterialInertia(
-            volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
-              displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryVeins(
-          useComplianceInput=false,
-          volume_start(displayUnit="ml") = 0.0006597,
-          ZeroPressureVolume=0.0001,
-          Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.IdealValve mitralValve(
-                                    useLimitationInputs=false, _Gon(displayUnit=
-               "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
-            useComplianceInput=true,
-          useExternalPressureInput=true,
-          volume_start=0.0002097,
-          ZeroPressureVolume=9e-05)                                    annotation(Placement(transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
-            Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
-                                                              annotation(Placement(transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-               1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.Conductor RSystemic(useConductanceInput=false,
-            Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-                                                               annotation(Placement(transformation(origin={31,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.Inertia systemicInertia(
-            volumeFlow_start(displayUnit="m3/s") = 7.935e-05, I(displayUnit=
-                "Pa.s2/m3") = 479960.594694)                       annotation(Placement(transformation(origin={75,-3},     extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.IdealValve tricuspidValve(
-            useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-                                                                     annotation(Placement(transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
-            useComplianceInput=true,
-          useExternalPressureInput=true,
-          volume_start=0.00018,
-          ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
-            Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
-                                                               annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
-               "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
-                                                                     annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
-          volume_start=2.1e-05,
-          ZeroPressureVolume=2e-05,
-          Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
-          volume_start=0.000637,
-          ZeroPressureVolume=0.0006,
-          Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}})));
-        Physiolibrary.Hydraulic.Components.ElasticVessel veins(
-          Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
-          volume_start(displayUnit="ml") = 0.002643,
-          ZeroPressureVolume=0.00237)
-          annotation (Placement(transformation(
-              origin={107,-3},
-              extent={{-15,-15},{15,15}})));
-        Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-          timeVaryingElastanceLeft(
-          Ed(displayUnit="mmHg/ml") = 13332238.7415,
-          Es(displayUnit="mmHg/ml") = 183318282.69563,
-          Pi0(displayUnit="mmHg") = 6666.11937075)
-          annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
-        Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-          timeVaryingElastanceRight(
-          Ed(displayUnit="mmHg/ml") = 3999671.62245,
-          Es(displayUnit="mmHg/ml") = 43729743.0721,
-          Pi0(displayUnit="mmHg") = 3199.73729796)
-          annotation (Placement(transformation(extent={{164,18},{184,38}})));
-        Physiolibrary.Types.Constants.FrequencyConst heartRate(k(displayUnit=
-                "Hz") = 1.2)
-          annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
+                                extends Bodylight.Icons.CardioVascular;
+    Bodylight.Hydraulic.Components.Conductor RPulmonaryVeins(
+        useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+        7.425609600872e-08) annotation (Placement(transformation(origin={-220,
+              60}, extent={{15,-15},{-15,15}})));
+    Bodylight.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
+        volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
+            "Pa.s2/m3") = 410632.9532382) annotation (Placement(transformation(
+            origin={-278,60}, extent={{15,-15},{-15,15}})));
+    Bodylight.Hydraulic.Components.Conductor RPulmonaryArtery(
+        useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+        2.2216823876548e-07) annotation (Placement(transformation(origin={200,
+              58}, extent={{17.5,-17.5},{-17.5,17.5}})));
+    Bodylight.Hydraulic.Components.Inertia pulmonaryArterialInertia(
+        volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
+          displayUnit="mmHg.s2/ml") = 99991.79056125) annotation (Placement(
+          transformation(origin={158,58}, extent={{15,-15},{-15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel pulmonaryVeins(
+      useComplianceInput=false,
+      volume_start(displayUnit="ml") = 0.0006597,
+      ZeroPressureVolume=0.0001,
+      Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07) annotation (
+        Placement(transformation(origin={-279,-3}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.IdealValve mitralValve(useLimitationInputs=
+          false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
+      annotation (Placement(transformation(origin={-243,-3}, extent={{-15,-15},
+              {15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel leftVentricle(
+      useComplianceInput=true,
+      useExternalPressureInput=true,
+      volume_start=0.0002097,
+      ZeroPressureVolume=9e-05) annotation (Placement(transformation(origin={-209,
+              -3}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
+        Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08) annotation
+      (Placement(transformation(origin={-181,-3}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit=
+            "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+      annotation (Placement(transformation(origin={-143,-3}, extent={{-15,-15},
+              {15,15}})));
+    Bodylight.Hydraulic.Components.Conductor RSystemic(useConductanceInput=
+          false, Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+      annotation (Placement(transformation(origin={31,-3}, extent={{-15,-15},{
+              15,15}})));
+    Bodylight.Hydraulic.Components.Inertia systemicInertia(volumeFlow_start(
+          displayUnit="m3/s") = 7.935e-05, I(displayUnit="Pa.s2/m3") =
+        479960.594694) annotation (Placement(transformation(origin={75,-3},
+            extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.IdealValve tricuspidValve(
+        useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") =
+        1.9996641612045e-06) annotation (Placement(transformation(origin={137,-3},
+            extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
+      useComplianceInput=true,
+      useExternalPressureInput=true,
+      volume_start=0.00018,
+      ZeroPressureVolume=7e-05) annotation (Placement(transformation(origin={
+              171,-3}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=
+          false, Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
+      annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},{
+              15,15}})));
+    Bodylight.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
+            "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+      annotation (Placement(transformation(origin={245,-3}, extent={{-15,-15},{
+              15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArtery(
+      volume_start=2.1e-05,
+      ZeroPressureVolume=2e-05,
+      Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10) annotation (
+        Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
+      volume_start=0.000637,
+      ZeroPressureVolume=0.0006,
+      Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08) annotation (
+        Placement(transformation(origin={124,58}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Components.ElasticVessel veins(
+      Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
+      volume_start(displayUnit="ml") = 0.002643,
+      ZeroPressureVolume=0.00237) annotation (Placement(transformation(origin={
+              107,-3}, extent={{-15,-15},{15,15}})));
+    Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+      timeVaryingElastanceLeft(
+      Ed(displayUnit="mmHg/ml") = 13332238.7415,
+      Es(displayUnit="mmHg/ml") = 183318282.69563,
+      Pi0(displayUnit="mmHg") = 6666.11937075)
+      annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
+    Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+      timeVaryingElastanceRight(
+      Ed(displayUnit="mmHg/ml") = 3999671.62245,
+      Es(displayUnit="mmHg/ml") = 43729743.0721,
+      Pi0(displayUnit="mmHg") = 3199.73729796)
+      annotation (Placement(transformation(extent={{164,18},{184,38}})));
+    Bodylight.Types.Constants.FrequencyConst heartRate(k(displayUnit="Hz") =
+        1.2)
+      annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
           //a1(      L=0.04,      R=0.0145,      h=0.00163,      E=4000)
         AvolioTree avolioTree(a42(R=2.8e-05))
           annotation (Placement(transformation(extent={{-92,-38},{-32,26}})));
@@ -2045,87 +2060,103 @@ package Avolio1980
       package Test
         model PulsatileCirculation
           "Model of cardiovascular system with pulsatile dynamic"
-                                  extends Physiolibrary.Icons.CardioVascular;
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryVeins(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              7.425609600872e-08)                                      annotation(Placement(transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
-              volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
-                  "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryArtery(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              2.2216823876548e-07)                                      annotation(Placement(transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryArterialInertia(
-              volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
-                displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryVeins(
-            useComplianceInput=false,
-            volume_start(displayUnit="ml") = 0.0006597,
-            ZeroPressureVolume=0.0001,
-            Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve mitralValve(
-                                      useLimitationInputs=false, _Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.0002097,
-            ZeroPressureVolume=9e-05)                                    annotation(Placement(transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
-                                                                annotation(Placement(transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-                 1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RSystemic(useConductanceInput=false,
-              Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-                                                                 annotation(Placement(transformation(origin={31,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Inertia systemicInertia(
-              volumeFlow_start(displayUnit="m3/s") = 7.935e-05, I(displayUnit=
-                  "Pa.s2/m3") = 479960.594694)                       annotation(Placement(transformation(origin={75,-3},     extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve tricuspidValve(
-              useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-                                                                       annotation(Placement(transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.00018,
-            ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
-                                                                 annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
-                                                                       annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
-            volume_start=2.1e-05,
-            ZeroPressureVolume=2e-05,
-            Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
-            volume_start=0.000637,
-            ZeroPressureVolume=0.0006,
-            Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel veins(
-            Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
-            volume_start(displayUnit="ml") = 0.002943,
-            ZeroPressureVolume=0.00237)
-            annotation (Placement(transformation(
-                origin={105,-1},
-                extent={{-15,-15},{15,15}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceLeft(
-            Ed(displayUnit="mmHg/ml") = 13332238.7415,
-            Es(displayUnit="mmHg/ml") = 183318282.69563,
-            Pi0(displayUnit="mmHg") = 6666.11937075)
-            annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceRight(
-            Ed(displayUnit="mmHg/ml") = 3999671.62245,
-            Es(displayUnit="mmHg/ml") = 43729743.0721,
-            Pi0(displayUnit="mmHg") = 3199.73729796)
-            annotation (Placement(transformation(extent={{164,18},{184,38}})));
-          Physiolibrary.Types.Constants.FrequencyConst heartRate(k(displayUnit=
-                  "Hz") = 1.2)
-            annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
+                                  extends Bodylight.Icons.CardioVascular;
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryVeins(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          7.425609600872e-08) annotation (Placement(transformation(origin={-220,
+                60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
+          volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
+              "Pa.s2/m3") = 410632.9532382) annotation (Placement(
+            transformation(origin={-278,60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryArtery(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          2.2216823876548e-07) annotation (Placement(transformation(origin={200,
+                58}, extent={{17.5,-17.5},{-17.5,17.5}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryArterialInertia(
+          volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
+            displayUnit="mmHg.s2/ml") = 99991.79056125) annotation (Placement(
+            transformation(origin={158,58}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryVeins(
+        useComplianceInput=false,
+        volume_start(displayUnit="ml") = 0.0006597,
+        ZeroPressureVolume=0.0001,
+        Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07) annotation (
+          Placement(transformation(origin={-279,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve mitralValve(useLimitationInputs
+          =false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
+        annotation (Placement(transformation(origin={-243,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel leftVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.0002097,
+        ZeroPressureVolume=9e-05) annotation (Placement(transformation(origin={
+                -209,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
+        annotation (Placement(transformation(origin={-181,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit=
+              "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={-143,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RSystemic(useConductanceInput=
+            false, Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+        annotation (Placement(transformation(origin={31,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.Inertia systemicInertia(volumeFlow_start(
+            displayUnit="m3/s") = 7.935e-05, I(displayUnit="Pa.s2/m3") =
+          479960.594694) annotation (Placement(transformation(origin={75,-3},
+              extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve tricuspidValve(
+          useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") =
+          1.9996641612045e-06) annotation (Placement(transformation(origin={137,
+                -3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.00018,
+        ZeroPressureVolume=7e-05) annotation (Placement(transformation(origin={
+                171,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
+        annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit
+            ="ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={245,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArtery(
+        volume_start=2.1e-05,
+        ZeroPressureVolume=2e-05,
+        Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10) annotation (
+          Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
+        volume_start=0.000637,
+        ZeroPressureVolume=0.0006,
+        Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08) annotation (
+          Placement(transformation(origin={124,58}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel veins(
+        Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
+        volume_start(displayUnit="ml") = 0.002943,
+        ZeroPressureVolume=0.00237) annotation (Placement(transformation(origin
+              ={105,-1}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceLeft(
+        Ed(displayUnit="mmHg/ml") = 13332238.7415,
+        Es(displayUnit="mmHg/ml") = 183318282.69563,
+        Pi0(displayUnit="mmHg") = 6666.11937075)
+        annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceRight(
+        Ed(displayUnit="mmHg/ml") = 3999671.62245,
+        Es(displayUnit="mmHg/ml") = 43729743.0721,
+        Pi0(displayUnit="mmHg") = 3199.73729796)
+        annotation (Placement(transformation(extent={{164,18},{184,38}})));
+      Bodylight.Types.Constants.FrequencyConst heartRate(k(displayUnit="Hz") =
+          1.2)
+        annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
             //a1(      L=0.04,      R=0.0145,      h=0.00163,      E=4000)
           ArterialTree2 arterialTree(a1(
               E=4000.0,
@@ -2303,12 +2334,12 @@ package Avolio1980
                 extent={{-10,-10},{10,10}},
                 rotation=180,
                 origin={-42,40})));
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
-              Placement(transformation(extent={{-28,-44},{-8,-24}}),
-                iconTransformation(extent={{-310,-10},{-290,10}})));
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
-              Placement(transformation(extent={{290,-10},{310,10}}),
-                iconTransformation(extent={{290,-10},{310,10}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
+          Placement(transformation(extent={{-28,-44},{-8,-24}}),
+            iconTransformation(extent={{-310,-10},{-290,10}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
+          Placement(transformation(extent={{290,-10},{310,10}}),
+            iconTransformation(extent={{290,-10},{310,10}})));
         equation
           connect(a2.port_b, a3.port_a) annotation (Line(
               points={{-18,36},{8,36}},
@@ -2390,9 +2421,19 @@ package Avolio1980
 
         model Windkessel_2element "Two-element Windkessel model"
           extends Modelica.Icons.Example;
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput = true) annotation(Placement(transformation(extent = {{-50, 38}, {-30, 58}})));
-          Physiolibrary.Hydraulic.Components.Conductor resistance(useConductanceInput = false, Conductance(displayUnit = "ml/(mmHg.s)") = 8.1006650191331e-09) annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin = {18, 34})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-40, 20})));
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Bodylight.Hydraulic.Components.Conductor resistance(useConductanceInput=
+            false, Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={18,34})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-40,20})));
           Examples.Utilities.Pulses pulses(QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
             annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
@@ -2434,30 +2475,40 @@ package Avolio1980
 
         model Windkessel_2elementtestinertia "Two-element Windkessel model"
           extends Modelica.Icons.Example;
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput = true) annotation(Placement(transformation(extent = {{-50, 38}, {-30, 58}})));
-          Physiolibrary.Hydraulic.Components.Conductor resistance(useConductanceInput = false, Conductance(displayUnit = "ml/(mmHg.s)") = 8.1006650191331e-09) annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={94,34})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-40, 20})));
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Bodylight.Hydraulic.Components.Conductor resistance(useConductanceInput=
+            false, Conductance(displayUnit="ml/(mmHg.s)") = 8.1006650191331e-09)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={94,34})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-40,20})));
           Examples.Utilities.Pulses pulses(QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
             annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
-          Physiolibrary.Hydraulic.Components.Inertia inertia(I(displayUnit=
-                  "mmHg.s2/ml") = 19998358.11225)
-            annotation (Placement(transformation(extent={{-10,38},{10,58}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel elasticVessel
-            annotation (Placement(transformation(extent={{12,38},{32,58}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-08)
-            annotation (Placement(transformation(extent={{-22,58},{-2,78}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor1(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-08)
-            annotation (Placement(transformation(extent={{30,60},{50,80}})));
-          Physiolibrary.Hydraulic.Components.Inertia inertia1(I(displayUnit=
-                  "mmHg.s2/ml") = 19998358.11225)
-            annotation (Placement(transformation(extent={{50,38},{70,58}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel elasticVessel1
-            annotation (Placement(transformation(extent={{78,58},{98,78}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel elasticVessel2
-            annotation (Placement(transformation(extent={{-44,64},{-24,84}})));
+      Bodylight.Hydraulic.Components.Inertia inertia(I(displayUnit="mmHg.s2/ml")
+           = 19998358.11225)
+        annotation (Placement(transformation(extent={{-10,38},{10,58}})));
+      Bodylight.Hydraulic.Components.ElasticVessel elasticVessel
+        annotation (Placement(transformation(extent={{12,38},{32,58}})));
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{-22,58},{-2,78}})));
+      Bodylight.Hydraulic.Components.Conductor conductor1(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-08)
+        annotation (Placement(transformation(extent={{30,60},{50,80}})));
+      Bodylight.Hydraulic.Components.Inertia inertia1(I(displayUnit=
+              "mmHg.s2/ml") = 19998358.11225)
+        annotation (Placement(transformation(extent={{50,38},{70,58}})));
+      Bodylight.Hydraulic.Components.ElasticVessel elasticVessel1
+        annotation (Placement(transformation(extent={{78,58},{98,78}})));
+      Bodylight.Hydraulic.Components.ElasticVessel elasticVessel2
+        annotation (Placement(transformation(extent={{-44,64},{-24,84}})));
         equation
           connect(resistance.q_out, veins.y) annotation(Line(points={{94,24},{
                   94,20},{-30,20}},                                                                    color = {0, 0, 0}, thickness = 1, smooth = Smooth.None));
@@ -2523,12 +2574,12 @@ package Avolio1980
         end Windkessel_2elementtestinertia;
 
         model ArterialTree2
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
-              Placement(transformation(extent={{-28,-44},{-8,-24}}),
-                iconTransformation(extent={{-310,-10},{-290,10}})));
-          Physiolibrary.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
-              Placement(transformation(extent={{290,-10},{310,10}}),
-                iconTransformation(extent={{290,-10},{310,10}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_a port_a annotation (
+          Placement(transformation(extent={{-28,-44},{-8,-24}}),
+            iconTransformation(extent={{-310,-10},{-290,10}})));
+      Bodylight.Hydraulic.Interfaces.HydraulicPort_b port_b annotation (
+          Placement(transformation(extent={{290,-10},{310,10}}),
+            iconTransformation(extent={{290,-10},{310,10}})));
           Parts.ArterialSegment a1 annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
                 rotation=90,
@@ -2584,14 +2635,18 @@ package Avolio1980
 
         model Windkessel_test2 "Two-element Windkessel model"
           extends Modelica.Icons.Example;
-          import Modelica.SIunits.*;
+          import Modelica.Units.SI.*;
             inner parameter Real arterialStiffnessScale = 1;
               inner parameter Length cannulaOuterDiameter = 0.007
             "Outer diameter of ECMO cannulas (derived tree only)";
           inner parameter Length cannulaDepth = 0.007;
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput = true) annotation(Placement(transformation(extent = {{-50, 38}, {-30, 58}})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
-                                                                annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-40, 20})));
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-40,20})));
           Examples.Utilities.Pulses pulses(QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
             annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
@@ -2603,15 +2658,15 @@ package Avolio1980
             L=0.02,
             R=0.0112,
             h=0.00132) annotation (Placement(transformation(extent={{20,38},{40,58}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (Placement(
-                transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={24,20})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart1(
-                                                              useSolutionFlowInput = true) annotation(Placement(transformation(extent={{-60,-38},
-                    {-40,-18}})));
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={24,20})));
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart1(useSolutionFlowInput=
+            true)
+        annotation (Placement(transformation(extent={{-60,-38},{-40,-18}})));
           Examples.Utilities.Pulses pulses1(
                                            QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
@@ -2628,14 +2683,17 @@ package Avolio1980
             h=0.00132,
             E(displayUnit="mmHg") = 39996.7162245)
             annotation (Placement(transformation(extent={{32,-44},{82,-12}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor1(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (Placement(
-                transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={40,-70})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins1(P=666.611937075)
-                                                                annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin={-50,-64})));
+      Bodylight.Hydraulic.Components.Conductor conductor1(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={40,-70})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins1(P=666.611937075)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-50,-64})));
         equation
           connect(pulses.volumeflowrate, heart.solutionFlow) annotation(Line(points = {{-45, 68}, {-40, 68}, {-40, 55}}, color = {0, 0, 127}, smooth = Smooth.None));
           connect(heart.q_out, arterialSegment.port_a) annotation (Line(
@@ -2702,10 +2760,14 @@ package Avolio1980
 
         model Windkessel_test3 "Two-element Windkessel model"
           extends Modelica.Icons.Example;
-          import Modelica.SIunits.*;
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput = true) annotation(Placement(transformation(extent = {{-50, 38}, {-30, 58}})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
-                                                                annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-40, 20})));
+          import Modelica.Units.SI.*;
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-40,20})));
           Examples.Utilities.Pulses pulses(QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
             annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
@@ -2717,12 +2779,12 @@ package Avolio1980
             L=0.02,
             R=0.0112,
             h=0.00132) annotation (Placement(transformation(extent={{20,38},{40,58}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (Placement(
-                transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={24,20})));
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={24,20})));
         equation
           connect(pulses.volumeflowrate, heart.solutionFlow) annotation(Line(points = {{-45, 68}, {-40, 68}, {-40, 55}}, color = {0, 0, 127}, smooth = Smooth.None));
           connect(heart.q_out, arterialSegment.port_a) annotation (Line(
@@ -2767,23 +2829,27 @@ package Avolio1980
 
         model Windkessel_test4 "Two-element Windkessel model"
           extends Modelica.Icons.Example;
-          import Modelica.SIunits.*;
+          import Modelica.Units.SI.*;
             inner parameter Real arterialStiffnessScale = 1;
               inner parameter Length cannulaOuterDiameter = 0.007
             "Outer diameter of ECMO cannulas (derived tree only)";
           inner parameter Length cannulaDepth = 0.007;
-          Physiolibrary.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput = true) annotation(Placement(transformation(extent = {{-50, 38}, {-30, 58}})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
-                                                                annotation(Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-40, 20})));
+      Bodylight.Hydraulic.Sources.UnlimitedPump heart(useSolutionFlowInput=true)
+        annotation (Placement(transformation(extent={{-50,38},{-30,58}})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume veins(P=666.611937075)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-40,20})));
           Examples.Utilities.Pulses pulses(QP(displayUnit="m3/s") = 0.000424,
               HR=1.2)
             annotation (Placement(transformation(extent={{-64,58},{-44,78}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (Placement(
-                transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={28,0})));
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-07) annotation (
+          Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={28,0})));
           AvolioTree avolioTree
             annotation (Placement(transformation(extent={{-10,16},{50,80}})));
         equation
@@ -2825,91 +2891,106 @@ package Avolio1980
 
         model PulsatileCirculationTest1
           "Model of cardiovascular system with pulsatile dynamic"
-                                  extends Physiolibrary.Icons.CardioVascular;
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryVeins(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              7.425609600872e-08)                                      annotation(Placement(transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
-              volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
-                  "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryArtery(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              2.2216823876548e-07)                                      annotation(Placement(transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryArterialInertia(
-              volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
-                displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryVeins(
-            useComplianceInput=false,
-            volume_start(displayUnit="ml") = 0.0006597,
-            ZeroPressureVolume=0.0001,
-            Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve mitralValve(
-                                      useLimitationInputs=false, _Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.0002097,
-            ZeroPressureVolume=9e-05)                                    annotation(Placement(transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
-                                                                annotation(Placement(transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-                 1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Inertia systemicInertia(
-              volumeFlow_start(displayUnit="m3/s") = 7.935e-05, I(displayUnit=
-                  "Pa.s2/m3") = 479960.594694)                       annotation(Placement(transformation(origin={75,-3},     extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve tricuspidValve(
-              useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-                                                                       annotation(Placement(transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.00018,
-            ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
-                                                                 annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
-                                                                       annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
-            volume_start=2.1e-05,
-            ZeroPressureVolume=2e-05,
-            Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
-            volume_start=0.000637,
-            ZeroPressureVolume=0.0006,
-            Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel veins(
-            Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
-            volume_start(displayUnit="ml") = 0.002643,
-            ZeroPressureVolume=0.00237)
-            annotation (Placement(transformation(
-                origin={103,-3},
-                extent={{-15,-15},{15,15}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceLeft(
-            Ed(displayUnit="mmHg/ml") = 13332238.7415,
-            Es(displayUnit="mmHg/ml") = 183318282.69563,
-            Pi0(displayUnit="mmHg") = 6666.11937075)
-            annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceRight(
-            Ed(displayUnit="mmHg/ml") = 3999671.62245,
-            Es(displayUnit="mmHg/ml") = 43729743.0721,
-            Pi0(displayUnit="mmHg") = 3199.73729796)
-            annotation (Placement(transformation(extent={{164,18},{184,38}})));
-          Physiolibrary.Types.Constants.FrequencyConst heartRate(k(displayUnit=
-                  "Hz") = 1.2)
-            annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
+                                  extends Bodylight.Icons.CardioVascular;
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryVeins(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          7.425609600872e-08) annotation (Placement(transformation(origin={-220,
+                60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
+          volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
+              "Pa.s2/m3") = 410632.9532382) annotation (Placement(
+            transformation(origin={-278,60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryArtery(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          2.2216823876548e-07) annotation (Placement(transformation(origin={200,
+                58}, extent={{17.5,-17.5},{-17.5,17.5}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryArterialInertia(
+          volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
+            displayUnit="mmHg.s2/ml") = 99991.79056125) annotation (Placement(
+            transformation(origin={158,58}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryVeins(
+        useComplianceInput=false,
+        volume_start(displayUnit="ml") = 0.0006597,
+        ZeroPressureVolume=0.0001,
+        Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07) annotation (
+          Placement(transformation(origin={-279,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve mitralValve(useLimitationInputs
+          =false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
+        annotation (Placement(transformation(origin={-243,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel leftVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.0002097,
+        ZeroPressureVolume=9e-05) annotation (Placement(transformation(origin={
+                -209,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
+        annotation (Placement(transformation(origin={-181,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit=
+              "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={-143,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.Inertia systemicInertia(volumeFlow_start(
+            displayUnit="m3/s") = 7.935e-05, I(displayUnit="Pa.s2/m3") =
+          479960.594694) annotation (Placement(transformation(origin={75,-3},
+              extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve tricuspidValve(
+          useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") =
+          1.9996641612045e-06) annotation (Placement(transformation(origin={137,
+                -3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.00018,
+        ZeroPressureVolume=7e-05) annotation (Placement(transformation(origin={
+                171,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
+        annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit
+            ="ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={245,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArtery(
+        volume_start=2.1e-05,
+        ZeroPressureVolume=2e-05,
+        Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10) annotation (
+          Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
+        volume_start=0.000637,
+        ZeroPressureVolume=0.0006,
+        Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08) annotation (
+          Placement(transformation(origin={124,58}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel veins(
+        Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
+        volume_start(displayUnit="ml") = 0.002643,
+        ZeroPressureVolume=0.00237) annotation (Placement(transformation(origin
+              ={103,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceLeft(
+        Ed(displayUnit="mmHg/ml") = 13332238.7415,
+        Es(displayUnit="mmHg/ml") = 183318282.69563,
+        Pi0(displayUnit="mmHg") = 6666.11937075)
+        annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceRight(
+        Ed(displayUnit="mmHg/ml") = 3999671.62245,
+        Es(displayUnit="mmHg/ml") = 43729743.0721,
+        Pi0(displayUnit="mmHg") = 3199.73729796)
+        annotation (Placement(transformation(extent={{164,18},{184,38}})));
+      Bodylight.Types.Constants.FrequencyConst heartRate(k(displayUnit="Hz") =
+          1.2)
+        annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
             //a1(      L=0.04,      R=0.0145,      h=0.00163,      E=4000)
           AvolioTree avolioTree
             annotation (Placement(transformation(extent={{-90,-38},{-30,26}})));
-          Physiolibrary.Hydraulic.Components.Conductor RSystemic1(
-                                                                 useConductanceInput=false,
-              Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-                                                                 annotation(Placement(transformation(origin={19,1},     extent = {{-15, -15}, {15, 15}})));
+      Bodylight.Hydraulic.Components.Conductor RSystemic1(useConductanceInput=
+            false, Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+        annotation (Placement(transformation(origin={19,1}, extent={{-15,-15},{
+                15,15}})));
         equation
           connect(systemicInertia.q_out, veins.q_in) annotation (Line(
               points={{90,-3},{103,-3}},
@@ -3061,27 +3142,27 @@ package Avolio1980
             ZeroPressureVolume=0.0001,
             Compliance=9.0007389101479e-08)
             annotation (Placement(transformation(extent={{-30,14},{-10,34}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel elasticVessel(
-            volume_start=0.001,
-            ZeroPressureVolume=0.0001,
-            Compliance=9.0007389101479e-08)
-            annotation (Placement(transformation(extent={{-24,-36},{-4,-16}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-            annotation (Placement(transformation(extent={{-6,16},{14,36}})));
-          Physiolibrary.Hydraulic.Components.Conductor conductor1(Conductance(
-                displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-            annotation (Placement(transformation(extent={{8,-36},{28,-16}})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume unlimitedVolume(P=-533.28954966)
-            annotation (Placement(transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={58,24})));
-          Physiolibrary.Hydraulic.Sources.UnlimitedVolume unlimitedVolume1(P=-533.28954966)
-            annotation (Placement(transformation(
-                extent={{-10,-10},{10,10}},
-                rotation=180,
-                origin={56,-22})));
+      Bodylight.Hydraulic.Components.ElasticVessel elasticVessel(
+        volume_start=0.001,
+        ZeroPressureVolume=0.0001,
+        Compliance=9.0007389101479e-08)
+        annotation (Placement(transformation(extent={{-24,-36},{-4,-16}})));
+      Bodylight.Hydraulic.Components.Conductor conductor(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+        annotation (Placement(transformation(extent={{-6,16},{14,36}})));
+      Bodylight.Hydraulic.Components.Conductor conductor1(Conductance(
+            displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+        annotation (Placement(transformation(extent={{8,-36},{28,-16}})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume unlimitedVolume(P=-533.28954966)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={58,24})));
+      Bodylight.Hydraulic.Sources.UnlimitedVolume unlimitedVolume1(P=-533.28954966)
+        annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=180,
+            origin={56,-22})));
         equation
           connect(elasticVesselNP.q_in, conductor.q_in) annotation (Line(
               points={{-20,24},{-12,24},{-12,26},{-6,26}},
@@ -3110,11 +3191,11 @@ package Avolio1980
         model HemodynamicsBurkhoff_AvolioTree
           //Cardiovascular.Hydraulic.Components.Resistor
           //Cardiovascular.Hydraulic.Components.IdealValveNorm
-          Physiolibrary.Hydraulic.Components.ElasticVessel Cvs(
-            volume_start=0.002101,
-            ZeroPressureVolume=0.00223,
-            Compliance=5.2504310309196e-07)                                                                                                     annotation(Placement(transformation(extent={{-80,12},
-                    {-60,32}})));
+      Bodylight.Hydraulic.Components.ElasticVessel Cvs(
+        volume_start=0.002101,
+        ZeroPressureVolume=0.00223,
+        Compliance=5.2504310309196e-07)
+        annotation (Placement(transformation(extent={{-80,12},{-60,32}})));
           CardiovascularDevel.Hydraulic.Components.IdealValveNorm AOV(R_on=
                 266644.77483) annotation (Placement(transformation(
                 extent={{-10,-10},{10,10}},
@@ -3170,24 +3251,27 @@ package Avolio1980
           CardiovascularDevel.Hydraulic.Components.Resistor Rcsp(Resistance=
                 2666447.7483)
             annotation (Placement(transformation(extent={{70,-50},{90,-30}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel Cap(
-            volume_start=0.000802,
-            ZeroPressureVolume=0.0006,
-            Compliance=1.5001231516913e-07,
-            useExternalPressureInput=true)                                                                                                     annotation(Placement(transformation(extent = {{144, -48}, {164, -28}})));
+      Bodylight.Hydraulic.Components.ElasticVessel Cap(
+        volume_start=0.000802,
+        ZeroPressureVolume=0.0006,
+        Compliance=1.5001231516913e-07,
+        useExternalPressureInput=true)
+        annotation (Placement(transformation(extent={{144,-48},{164,-28}})));
           CardiovascularDevel.Hydraulic.Components.Resistor Rcp(Resistance=
                 2666447.7483)
             annotation (Placement(transformation(extent={{122,-48},{142,-28}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel Cvp(
-            volume_start=0.000154,
-            ZeroPressureVolume=0.0001,
-            Compliance=5.2504310309196e-08,
-            useExternalPressureInput=true)                                                                                                     annotation(Placement(transformation(extent = {{184, -48}, {204, -28}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel Capprox(
-            volume_start=3e-05,
-            ZeroPressureVolume=2e-05,
-            Compliance=7.5006157584566e-09,
-            useExternalPressureInput=true)                                                                                                     annotation(Placement(transformation(extent = {{98, -48}, {118, -28}})));
+      Bodylight.Hydraulic.Components.ElasticVessel Cvp(
+        volume_start=0.000154,
+        ZeroPressureVolume=0.0001,
+        Compliance=5.2504310309196e-08,
+        useExternalPressureInput=true)
+        annotation (Placement(transformation(extent={{184,-48},{204,-28}})));
+      Bodylight.Hydraulic.Components.ElasticVessel Capprox(
+        volume_start=3e-05,
+        ZeroPressureVolume=2e-05,
+        Compliance=7.5006157584566e-09,
+        useExternalPressureInput=true)
+        annotation (Placement(transformation(extent={{98,-48},{118,-28}})));
           CardiovascularDevel.Hydraulic.Components.Resistor Rap(Resistance=
                 2666447.7483)
             annotation (Placement(transformation(extent={{164,-48},{184,-28}})));
@@ -3222,9 +3306,8 @@ package Avolio1980
             Alpha=24000,
             Ees=205316476.6191)
             annotation (Placement(transformation(extent={{88,16},{112,36}})));
-          Physiolibrary.Types.Constants.FrequencyConst heartRate(k=
-                1.3333333333333)                                                      annotation(Placement(transformation(extent={{-86,34},
-                    {-78,42}})));
+      Bodylight.Types.Constants.FrequencyConst heartRate(k=1.3333333333333)
+        annotation (Placement(transformation(extent={{-86,34},{-78,42}})));
           Modelica.Blocks.Math.Gain RAVGain(k=0.02) annotation (Placement(
                 transformation(
                 extent={{-5,-5},{5,5}},
@@ -3245,13 +3328,13 @@ package Avolio1980
                 extent={{-4,-4},{4,4}},
                 rotation=270,
                 origin={176,14})));
-          Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure
-            annotation (Placement(transformation(extent={{100,-22},{112,-12}})));
-          Physiolibrary.Hydraulic.Sensors.PressureMeasure pressureMeasure1
-            annotation (Placement(transformation(
-                extent={{7,-5},{-7,5}},
-                rotation=0,
-                origin={19,-53})));
+      Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure
+        annotation (Placement(transformation(extent={{100,-22},{112,-12}})));
+      Bodylight.Hydraulic.Sensors.PressureMeasure pressureMeasure1 annotation (
+          Placement(transformation(
+            extent={{7,-5},{-7,5}},
+            rotation=0,
+            origin={19,-53})));
           Modelica.Blocks.Math.Add add2 annotation (Placement(transformation(
                 extent={{-3,-3},{3,3}},
                 rotation=270,
@@ -3260,11 +3343,11 @@ package Avolio1980
                 extent={{-3,-3},{3,3}},
                 rotation=270,
                 origin={109,11})));
-          Physiolibrary.Types.Constants.PressureConst IntraThoracicPressure(k=0)
-            annotation (Placement(transformation(
-                extent={{-4,-4},{4,4}},
-                rotation=0,
-                origin={50,-4})));
+      Bodylight.Types.Constants.PressureConst IntraThoracicPressure(k=0)
+        annotation (Placement(transformation(
+            extent={{-4,-4},{4,4}},
+            rotation=0,
+            origin={50,-4})));
           AvolioTree avolioTree
             annotation (Placement(transformation(extent={{22,-6},{-38,58}})));
           Hydraulic.Components.Resistor                     Ras(Resistance=
@@ -3465,84 +3548,99 @@ package Avolio1980
 
         model PulsatileCirculation2
           "Model of cardiovascular system with pulsatile dynamic"
-                                  extends Physiolibrary.Icons.CardioVascular;
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryVeins(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              7.425609600872e-08)                                      annotation(Placement(transformation(origin = {-220, 60}, extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
-              volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
-                  "Pa.s2/m3") = 410632.9532382)                            annotation(Placement(transformation(origin={-278,60},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RPulmonaryArtery(
-              useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)")=
-              2.2216823876548e-07)                                      annotation(Placement(transformation(origin={200,58},    extent = {{17.5, -17.5}, {-17.5, 17.5}})));
-          Physiolibrary.Hydraulic.Components.Inertia pulmonaryArterialInertia(
-              volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
-                displayUnit="mmHg.s2/ml") = 99991.79056125)                   annotation(Placement(transformation(origin={158,58},    extent = {{15, -15}, {-15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryVeins(
-            useComplianceInput=false,
-            volume_start(displayUnit="ml") = 0.0006597,
-            ZeroPressureVolume=0.0001,
-            Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07)      annotation(Placement(transformation(origin={-279,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve mitralValve(
-                                      useLimitationInputs=false, _Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06)              annotation(Placement(transformation(origin={-243,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel leftVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.0002097,
-            ZeroPressureVolume=9e-05)                                    annotation(Placement(transformation(origin={-209,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
-                                                                annotation(Placement(transformation(origin={-181,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit="ml/(mmHg.s)")=
-                 1.9996641612045e-06, useLimitationInputs=false)    annotation(Placement(transformation(origin={-143,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RSystemic(useConductanceInput=false,
-              Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
-                                                                 annotation(Placement(transformation(origin={31,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve tricuspidValve(
-              useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
-                                                                       annotation(Placement(transformation(origin={137,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel rightVentricle(
-              useComplianceInput=true,
-            useExternalPressureInput=true,
-            volume_start=0.00018,
-            ZeroPressureVolume=7e-05)                                     annotation(Placement(transformation(origin={171,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=false,
-              Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
-                                                                 annotation(Placement(transformation(origin={207,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit=
-                 "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
-                                                                       annotation(Placement(transformation(origin={245,-3},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArtery(
-            volume_start=2.1e-05,
-            ZeroPressureVolume=2e-05,
-            Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10)         annotation(Placement(transformation(origin={243,57},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
-            volume_start=0.000637,
-            ZeroPressureVolume=0.0006,
-            Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08)           annotation(Placement(transformation(origin={124,58},    extent = {{-15, -15}, {15, 15}})));
-          Physiolibrary.Hydraulic.Components.ElasticVessel veins(
-            Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
-            volume_start(displayUnit="ml") = 0.002743,
-            ZeroPressureVolume=0.00237)
-            annotation (Placement(transformation(
-                origin={107,-3},
-                extent={{-15,-15},{15,15}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceLeft(
-            Ed(displayUnit="mmHg/ml") = 13332238.7415,
-            Es(displayUnit="mmHg/ml") = 183318282.69563,
-            Pi0(displayUnit="mmHg") = 6666.11937075)
-            annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
-          Physiolibrary.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
-            timeVaryingElastanceRight(
-            Ed(displayUnit="mmHg/ml") = 3999671.62245,
-            Es(displayUnit="mmHg/ml") = 43729743.0721,
-            Pi0(displayUnit="mmHg") = 3199.73729796)
-            annotation (Placement(transformation(extent={{164,18},{184,38}})));
-          Physiolibrary.Types.Constants.FrequencyConst heartRate(k(displayUnit=
-                  "Hz") = 1.2)
-            annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
+                                  extends Bodylight.Icons.CardioVascular;
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryVeins(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          7.425609600872e-08) annotation (Placement(transformation(origin={-220,
+                60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryVeinsInertia(
+          volumeFlow_start(displayUnit="m3/s") = 2.225e-05, I(displayUnit=
+              "Pa.s2/m3") = 410632.9532382) annotation (Placement(
+            transformation(origin={-278,60}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RPulmonaryArtery(
+          useConductanceInput=false, Conductance(displayUnit="m3/(Pa.s)") =
+          2.2216823876548e-07) annotation (Placement(transformation(origin={200,
+                58}, extent={{17.5,-17.5},{-17.5,17.5}})));
+      Bodylight.Hydraulic.Components.Inertia pulmonaryArterialInertia(
+          volumeFlow_start(displayUnit="ml/min") = 7.3233333333333e-07, I(
+            displayUnit="mmHg.s2/ml") = 99991.79056125) annotation (Placement(
+            transformation(origin={158,58}, extent={{15,-15},{-15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryVeins(
+        useComplianceInput=false,
+        volume_start(displayUnit="ml") = 0.0006597,
+        ZeroPressureVolume=0.0001,
+        Compliance(displayUnit="ml/mmHg") = 3.5027875591992e-07) annotation (
+          Placement(transformation(origin={-279,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve mitralValve(useLimitationInputs
+          =false, _Gon(displayUnit="ml/(mmHg.s)") = 1.9996641612045e-06)
+        annotation (Placement(transformation(origin={-243,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel leftVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.0002097,
+        ZeroPressureVolume=9e-05) annotation (Placement(transformation(origin={
+                -209,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RLeftMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 9.3757696980707e-08)
+        annotation (Placement(transformation(origin={-181,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve aorticValve(_Gon(displayUnit=
+              "ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={-143,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RSystemic(useConductanceInput=
+            false, Conductance(displayUnit="ml/(mmHg.s)") = 7.5006157584566e-09)
+        annotation (Placement(transformation(origin={31,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve tricuspidValve(
+          useLimitationInputs=false, _Gon(displayUnit="ml/(mmHg.s)") =
+          1.9996641612045e-06) annotation (Placement(transformation(origin={137,
+                -3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel rightVentricle(
+        useComplianceInput=true,
+        useExternalPressureInput=true,
+        volume_start=0.00018,
+        ZeroPressureVolume=7e-05) annotation (Placement(transformation(origin={
+                171,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.Conductor RRightMyo(useConductanceInput=
+            false, Conductance(displayUnit="m3/(Pa.s)") = 4.2858518443821e-07)
+        annotation (Placement(transformation(origin={207,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.IdealValve pulmonaryValve(_Gon(displayUnit
+            ="ml/(mmHg.s)") = 1.9996641612045e-06, useLimitationInputs=false)
+        annotation (Placement(transformation(origin={245,-3}, extent={{-15,-15},
+                {15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArtery(
+        volume_start=2.1e-05,
+        ZeroPressureVolume=2e-05,
+        Compliance(displayUnit="m3/Pa") = 6.7505541826109e-10) annotation (
+          Placement(transformation(origin={243,57}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel pulmonaryArterioles(
+        volume_start=0.000637,
+        ZeroPressureVolume=0.0006,
+        Compliance(displayUnit="ml/mmHg") = 2.0026644075079e-08) annotation (
+          Placement(transformation(origin={124,58}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Components.ElasticVessel veins(
+        Compliance(displayUnit="ml/mmHg") = 1.5001231516913e-07,
+        volume_start(displayUnit="ml") = 0.002743,
+        ZeroPressureVolume=0.00237) annotation (Placement(transformation(origin
+              ={107,-3}, extent={{-15,-15},{15,15}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceLeft(
+        Ed(displayUnit="mmHg/ml") = 13332238.7415,
+        Es(displayUnit="mmHg/ml") = 183318282.69563,
+        Pi0(displayUnit="mmHg") = 6666.11937075)
+        annotation (Placement(transformation(extent={{-222,16},{-202,36}})));
+      Bodylight.Hydraulic.Examples.Fernandez2013.Parts.TimeVaryingElastance
+        timeVaryingElastanceRight(
+        Ed(displayUnit="mmHg/ml") = 3999671.62245,
+        Es(displayUnit="mmHg/ml") = 43729743.0721,
+        Pi0(displayUnit="mmHg") = 3199.73729796)
+        annotation (Placement(transformation(extent={{164,18},{184,38}})));
+      Bodylight.Types.Constants.FrequencyConst heartRate(k(displayUnit="Hz") =
+          1.2)
+        annotation (Placement(transformation(extent={{-262,30},{-244,42}})));
             //a1(      L=0.04,      R=0.0145,      h=0.00163,      E=4000)
           AvolioTree avolioTree(a42(R=2.8e-05))
             annotation (Placement(transformation(extent={{-92,-38},{-32,26}})));

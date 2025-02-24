@@ -2,14 +2,13 @@ within Cardiovascular;
 package Types
   package Constants
     block FrequencyControl "External signal of type Frequency"
-      Physiolibrary.Types.RealIO.FrequencyOutput y
-        "HydraulicCompliance constant" annotation (Placement(transformation(
-              extent={{40,-10},{60,10}}), iconTransformation(extent={{40,-10},
-                {60,10}})));
-      Physiolibrary.Types.RealIO.FrequencyInput c annotation (Placement(
+      Bodylight.Types.RealIO.FrequencyOutput y "HydraulicCompliance constant"
+        annotation (Placement(transformation(extent={{40,-10},{60,10}}),
+            iconTransformation(extent={{40,-10},{60,10}})));
+      Bodylight.Types.RealIO.FrequencyInput c annotation (Placement(
             transformation(extent={{-40,-20},{0,20}}), iconTransformation(
               extent={{-40,-20},{0,20}})));
-      parameter Physiolibrary.Types.Frequency k;
+      parameter Bodylight.Types.Frequency k;
       //ignored for this component
       //TODO add switch between constant default signal and input control signal
     equation
@@ -32,9 +31,9 @@ package Types
     end FrequencyControl;
   end Constants;
 
-  type Area = Modelica.SIunits.Area (displayUnit="cm2",nominal=1e-4)
+  type Area = Modelica.Units.SI.Area(displayUnit="cm2",nominal=1e-4)
     "Type for area";
-  type Length = Modelica.SIunits.Length (displayUnit="cm",nominal=1e-2)
+  type Length = Modelica.Units.SI.Length(displayUnit="cm",nominal=1e-2)
     "Type for length and radius";
   type PulseShape = enumeration(
       pulseless,
@@ -47,7 +46,7 @@ package Types
       thoracicAorta1,
       thoracicAorta2) "Location of inserted ECMO cannula";
   package IO "Real types as input and output connectors"
-    import Physiolibrary.Types.*;
+    import Bodylight.Types.*;
 
     connector HydraulicResistanceInput = input HydraulicResistance
       "Input HydraulicResistance as connector" annotation (
