@@ -1,6 +1,6 @@
 ## Physiolibrary-models
 
-A set of different models of human physiology in Modelica language using [Physiolibrary](http://www.physiolibrary.org). Includes supporting scripts for generating list of initial values.
+A set of different models of human physiology in Modelica language using [Bodylight.mo](https://github.com/creative-connections/Bodylight.mo). Includes supporting scripts for generating list of initial values.
 
 Currently the circulation hemodynamic models are included based on description and literature made by 
 - Burkhoff et al., 
@@ -18,7 +18,7 @@ This model set is a supplementary material to following articles:
 
 
 Download the library model and open in the following order:
-  * Physiolibrary/...   from www.physiolibrary.org
+  * [Bodylight.mo](https://github.com/creative-connections/Bodylight.mo)
 then for Cardiovascular
   * Cardiovascular/package.mo
 for Metabolism
